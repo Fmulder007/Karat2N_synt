@@ -5,14 +5,13 @@
    Нет переключения LSB/USB
    Есть часы, датчик температуры, и сдвиг ПЧ для отстройки от помех.
 */
-#include <Adafruit_SSD1306.h>
+#include <Adafruit_SSD1306.h> // Use version 1.2.7
 #include <si5351.h>
 #include <Wire.h>
 #include <Encoder.h>
 #include <EEPROM.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#include <TimeLib.h>
 #include <DS1307RTC.h>
 
 
@@ -48,8 +47,8 @@ struct var {
   unsigned long lofreq = 496170UL; // Начальная ПЧ при первом включении.
   int calibration = 17843; // Начальная калибровка при первом включении.
   int ifshift = 0; // Начальный сдвиг ПЧ при первом включении.
-  byte minfreq = 36; // 100KHz Минимальный предел частоты
-  byte maxfreq = 37; // 100KHz Максимальный предел частоты
+  byte minfreq = 36; // *100KHz Минимальный предел частоты
+  byte maxfreq = 37; // *100KHz Максимальный предел частоты
 } varinfo;
 
 
@@ -358,7 +357,7 @@ void mainscreen() { //Процедура рисования главного э�
       display.println(varinfo.ifshift);
       display.setTextSize(1);
       display.print(menu);
-      display.println("  IF - SHIFT");
+      display.println("  IF - Shift");
       break;
 
     case 3: //Меню 3 - Настройка опорного гетеродина
@@ -377,10 +376,10 @@ void mainscreen() { //Процедура рисования главного э�
       break;
 
     case 5: //Меню 5 - Настройка калибровки кварца
-      display.println(varinfo.calibration*10);
+      display.println(varinfo.calibration * 10);
       display.setTextSize(1);
       display.print(menu);
-      display.print("  Xtal Cal");
+      display.print("  Xtal Cal Hz/100");
       break;
 
 
