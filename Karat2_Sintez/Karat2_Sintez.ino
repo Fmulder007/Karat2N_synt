@@ -1,9 +1,5 @@
 /*
-   Без ПЛЛ меню
-   Код для синтезатора от UD0CAJ
-   Предел диапазона задается в меню.
-   Нет переключения LSB/USB
-   Есть часы, датчик температуры, и сдвиг ПЧ для отстройки от помех.
+UD0CAJ Karat2_sintez
 */
 #include <Adafruit_SSD1306.h> // Use version 1.2.7
 #include <si5351.h>
@@ -80,7 +76,7 @@ void setup() {
   si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);
   si5351.set_ms_source(SI5351_CLK0, SI5351_PLLA);
   si5351.set_ms_source(SI5351_CLK1, SI5351_PLLB);
-  si5351.set_correction(varinfo.calibration * 10, SI5351_PLL_INPUT_XO);
+  si5351.set_correction(varinfo.calibration * 100L, SI5351_PLL_INPUT_XO);
   freqprint = varinfo.freq / 1000.00;
   losetup();
   vfosetup();
