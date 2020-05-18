@@ -92,7 +92,7 @@ void loop() { // Главный цикл
   readencoder();
   txsensor ();
   if (!menu) {
-    if (millis() - previousdsp > 250) {
+    if (millis() - previousdsp > 100) {
       storetomem();
       battmeter();
       powermeter();
