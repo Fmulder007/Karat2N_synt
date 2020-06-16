@@ -17,8 +17,8 @@ UD0CAJ Karat2_sintez
 
 byte ONE_WIRE_BUS = 12; // Порт датчика температуры
 byte myEncBtn = 4;  // Порт нажатия кноба.
-byte mypowerpin = 14; // Порт показометра мощности.
-byte mybattpin = 15; // Порт датчика АКБ
+byte mypowerpin = 14; // Порт показометра мощности. А0
+byte mybattpin = 15; // Порт датчика АКБ А1
 byte txpin = 5; //Порт датчика ТХ.
 byte menu = 0; //Начальное положение меню.
 
