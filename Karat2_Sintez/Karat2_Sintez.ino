@@ -1,5 +1,5 @@
 /*
-UD0CAJ Karat2_sintez
+  UD0CAJ Karat2_sintez
 */
 #include <Adafruit_SSD1306.h> // Use version 1.2.7
 #include <si5351.h>
@@ -26,6 +26,7 @@ int mypower;
 float mybatt;
 float freqprint;
 int temperature;
+int screenstep = 1000;
 
 long oldPosition  = 0;
 boolean actencf = false;
@@ -64,6 +65,7 @@ tmElements_t tm;
 
 
 void setup() {
+  Wire.setClock(1000000L);
   pinMode(myEncBtn, INPUT);
   pinMode(mypowerpin, INPUT);
   digitalWrite(myEncBtn, HIGH);
@@ -76,6 +78,8 @@ void setup() {
   si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);
   si5351.set_ms_source(SI5351_CLK0, SI5351_PLLA);
   si5351.set_ms_source(SI5351_CLK1, SI5351_PLLB);
+  si5351.drive_strength(SI5351_CLK0, SI5351_DRIVE_2MA);
+  si5351.drive_strength(SI5351_CLK1, SI5351_DRIVE_2MA);
   si5351.set_correction(varinfo.calibration * 100L, SI5351_PLL_INPUT_XO);
   freqprint = varinfo.freq / 1000.00;
   losetup();
@@ -92,7 +96,9 @@ void loop() { // Главный цикл
   readencoder();
   txsensor ();
   if (!menu) {
-    if (millis() - previousdsp > 100) {
+    if (txen) screenstep = 100;
+    else screenstep = 1000;
+    if (millis() - previousdsp > screenstep) {
       storetomem();
       battmeter();
       powermeter();
@@ -152,6 +158,7 @@ void txsensor () {
     RXifshift = varinfo.ifshift;
     vfosetup();
     losetup();
+    mainscreen();
   }
   //Если радио на приеме и НЕ нажали ТХ и RXifshift не равно varinfo.ifshift то прописать IF-SHIFT
   if (!txsens && !txen && RXifshift != varinfo.ifshift) {
