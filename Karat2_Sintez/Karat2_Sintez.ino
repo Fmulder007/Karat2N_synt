@@ -15,6 +15,8 @@
 #define ENCODER_OPTIMIZE_INTERRUPTS
 //#define ENCODER_DO_NOT_USE_INTERRUPTS
 
+char ver[ ] = "v 1.1.0";
+
 byte ONE_WIRE_BUS = 12; // Порт датчика температуры
 byte myEncBtn = 4;  // Порт нажатия кноба.
 byte mypowerpin = 14; // Порт показометра мощности. А0
@@ -88,6 +90,7 @@ void setup() {
   powermeter();
   tempsensor ();
   timenow ();
+  versionprint ();
   mainscreen();
 }
 
@@ -463,4 +466,14 @@ void memread() {
   else {
     memwrite ();
   }
+}
+
+void versionprint() {
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.setTextColor(WHITE);
+  display.setTextSize(3);
+  display.println(ver);
+  display.display();
+  delay(500);
 }
