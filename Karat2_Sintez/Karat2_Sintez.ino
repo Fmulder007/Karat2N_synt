@@ -1,21 +1,21 @@
 /*
   UD0CAJ Karat2_sintez
 */
-#include <Adafruit_SSD1306.h> // Use version 1.2.7!!!
-#include <si5351.h>
-#include <Wire.h>
-#include <Encoder.h>
-#include <EEPROM.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <DS1307RTC.h>
+#include "Adafruit_SSD1306.h" // Use version 1.2.7!!!
+#include "si5351.h"
+#include "Wire.h"
+#include "Encoder.h"
+#include "EEPROM.h"
+#include "OneWire.h"
+#include "DallasTemperature.h"
+#include "DS1307RTC.h"
 
 
 
 #define ENCODER_OPTIMIZE_INTERRUPTS
 //#define ENCODER_DO_NOT_USE_INTERRUPTS
 
-char ver[ ] = "v 1.1.0";
+char ver[ ] = "v 1.1.1";
 
 byte ONE_WIRE_BUS = 12; // Порт датчика температуры
 byte myEncBtn = 4;  // Порт нажатия кноба.
@@ -23,7 +23,7 @@ byte mypowerpin = 14; // Порт показометра мощности. А0
 byte mybattpin = 15; // Порт датчика АКБ А1
 byte txpin = 5; //Порт датчика ТХ.
 byte menu = 0; //Начальное положение меню.
-byte arraystp[]={100,50,10}; //шаги настройки * 10 герц.
+byte arraystp[] = {100, 50, 10}; //шаги настройки * 10 герц.
 
 int mypower;
 float mybatt;
@@ -69,7 +69,6 @@ tmElements_t tm;
 
 
 void setup() {
-  Wire.setClock(1000000L);
   pinMode(myEncBtn, INPUT);
   pinMode(mypowerpin, INPUT);
   digitalWrite(myEncBtn, HIGH);
