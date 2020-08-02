@@ -23,6 +23,7 @@ byte mypowerpin = 14; // Порт показометра мощности. А0
 byte mybattpin = 15; // Порт датчика АКБ А1
 byte txpin = 5; //Порт датчика ТХ.
 byte menu = 0; //Начальное положение меню.
+byte arraystp[]={100,50,10}; //шаги настройки * 10 герц.
 
 int mypower;
 float mybatt;
@@ -38,6 +39,7 @@ boolean knobup = true;
 boolean exitmenu = false;
 boolean reqtemp = false;
 boolean timesetup = false;
+
 
 struct var {
   int stp = 100;
