@@ -1,7 +1,7 @@
 /*
   UD0CAJ Karat2_sintez
 */
-#include <Adafruit_SSD1306.h> // Use version 1.2.7
+#include <Adafruit_SSD1306.h> // Use version 1.2.7!!!
 #include <si5351.h>
 #include <Wire.h>
 #include <Encoder.h>
