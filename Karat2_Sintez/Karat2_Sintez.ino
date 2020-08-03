@@ -1,11 +1,16 @@
 /*
   UD0CAJ Karat2_sintez
+  7-7,2 MHz
+  500N
+  496.570 KHz Lo freq
+  Eeprom24C32 memory using
+  
 */
 #include "Adafruit_SSD1306.h" // Use version 1.2.7!!!
 #include "si5351.h"
 #include "Wire.h"
 #include "Encoder.h"
-#include "EEPROM.h"
+#include "Eeprom24C32_64.h"
 #include "OneWire.h"
 #include "DallasTemperature.h"
 #include "DS1307RTC.h"
@@ -15,7 +20,7 @@
 #define ENCODER_OPTIMIZE_INTERRUPTS
 //#define ENCODER_DO_NOT_USE_INTERRUPTS
 
-char ver[ ] = "v 1.1.1";
+char ver[ ] = "v 1.2.0";
 
 byte ONE_WIRE_BUS = 12; // Порт датчика температуры
 byte myEncBtn = 4;  // Порт нажатия кноба.
@@ -23,12 +28,11 @@ byte mypowerpin = 14; // Порт показометра мощности. А0
 byte mybattpin = 15; // Порт датчика АКБ А1
 byte txpin = 5; //Порт датчика ТХ.
 byte menu = 0; //Начальное положение меню.
-byte arraystp[] = {100, 50, 10}; //шаги настройки * 10 герц.
+byte arraystp[] = {1, 10, 50, 100}; //шаги настройки * 10 герц.
 
-int mypower;
-float mybatt;
-float freqprint;
-int temperature;
+byte mypower;
+byte mybatt;
+byte temperature;
 int screenstep = 1000;
 
 long oldPosition  = 0;
@@ -42,14 +46,14 @@ boolean timesetup = false;
 
 
 struct var {
-  int stp = 100;
-  int battcal = 219;
-  unsigned long freq = 3690000UL; // Начальная частота при первом включении.
-  unsigned long lofreq = 496170UL; // Начальная ПЧ при первом включении.
-  int calibration = 17843; // Начальная калибровка при первом включении.
+  byte stp = 0;
+  int battcal = 253;
+  unsigned long freq = 7090000UL; // Начальная частота при первом включении.
+  unsigned long lofreq = 496570UL; // Начальная ПЧ при первом включении.
+  int calibration = 2277; // Начальная калибровка при первом включении.
   int ifshift = 0; // Начальный сдвиг ПЧ при первом включении.
-  byte minfreq = 36; // *100KHz Минимальный предел частоты
-  byte maxfreq = 37; // *100KHz Максимальный предел частоты
+  byte minfreq = 70; // *100KHz Минимальный предел частоты
+  byte maxfreq = 72; // *100KHz Максимальный предел частоты
 } varinfo;
 
 
@@ -60,6 +64,8 @@ unsigned long previoustime = 0;
 unsigned long knobMillis = 0;
 unsigned long actenc = 0;
 
+
+static Eeprom24C32_64 AT24C32(0x50);
 Si5351 si5351;
 Encoder myEnc(3, 2); //порты подключения енкодера.
 Adafruit_SSD1306 display(4);
@@ -84,7 +90,6 @@ void setup() {
   si5351.drive_strength(SI5351_CLK0, SI5351_DRIVE_2MA);
   si5351.drive_strength(SI5351_CLK1, SI5351_DRIVE_2MA);
   si5351.set_correction(varinfo.calibration * 100L, SI5351_PLL_INPUT_XO);
-  freqprint = varinfo.freq / 1000.00;
   losetup();
   vfosetup();
   battmeter();
@@ -141,7 +146,7 @@ void tempsensor () {
     reqtemp = true;
   }
   if (millis() - previoustemp > 8000 && reqtemp) {
-    temperature = (int)(0.5 + sensors.getTempCByIndex(0));
+    temperature = (byte)(0.5 + sensors.getTempCByIndex(0));
     previoustemp = millis();
     reqtemp = false;
   }
@@ -184,15 +189,15 @@ void pushknob () {  // Обработка нажатия на кноб
   if (knobdown && !knobup) { //Если кноб отпущен и был нажат
     knobup = true; // отмечаем флаг что кноб отпущен
     long knobupmillis = millis();
-    if (knobupmillis - knobMillis >= 1000) {
-      if (menu != 0) menu = 0; //Переходим на меню дальше
-      if (menu == 0) menu = 3; //Если меню больше 5 выйти на главный экран
+    if (knobupmillis - knobMillis >= 1000) { //Если длительное нажатие
+      if (menu == 0) menu = 3;
+      else if (menu != 0) menu = 0;
     }
 
     if (knobupmillis - knobMillis < 1000 && knobupmillis - knobMillis > 100) { //Если кноб отпущен и был нажат и времени от таймера прошло 100Мс
       menu ++; //Переходим на меню дальше
-      if (menu == 3) menu = 0; //Если меню больше 3 выйти на главный экран
-      if (menu > 9) menu = 0; //Если меню больше 5 выйти на главный экран
+      if (menu == 3) menu = 0; //Если меню 3 выйти на главный экран
+      if (menu > 9) menu = 3; //Если меню больше 9 перейти на меню 3
     }
     mainscreen();
   }
@@ -214,19 +219,19 @@ void readencoder() { // работа с енкодером
 
       case 0: //Основная настройка частоты
         if (newPosition > oldPosition && varinfo.freq <= varinfo.maxfreq * 100000UL) {
-          if (varinfo.freq % varinfo.stp) {
-            varinfo.freq = varinfo.freq + varinfo.stp - (varinfo.freq % varinfo.stp);
+          if (varinfo.freq % (arraystp[varinfo.stp] * 10)) {
+            varinfo.freq = varinfo.freq + (arraystp[varinfo.stp] * 10) - (varinfo.freq % (arraystp[varinfo.stp] * 10));
           }
           else {
-            varinfo.freq = varinfo.freq + varinfo.stp;
+            varinfo.freq = varinfo.freq + (arraystp[varinfo.stp] * 10);
           }
         }
         if (newPosition < oldPosition && varinfo.freq >= varinfo.minfreq * 100000UL) {
-          if (varinfo.freq % varinfo.stp) {
-            varinfo.freq = varinfo.freq - (varinfo.freq % varinfo.stp);
+          if (varinfo.freq % (arraystp[varinfo.stp] * 10)) {
+            varinfo.freq = varinfo.freq - (varinfo.freq % (arraystp[varinfo.stp] * 10));
           }
           else {
-            varinfo.freq = varinfo.freq - varinfo.stp;
+            varinfo.freq = varinfo.freq - (arraystp[varinfo.stp] * 10);
           }
         }
         if (varinfo.freq < varinfo.minfreq * 100000UL) varinfo.freq = varinfo.minfreq * 100000UL;
@@ -235,15 +240,15 @@ void readencoder() { // работа с енкодером
         break;
 
       case 1: //Настройка ШАГА настройки
-        if (newPosition > oldPosition && varinfo.stp <= 1000) varinfo.stp = varinfo.stp * 10;
-        if (newPosition < oldPosition && varinfo.stp >= 10) varinfo.stp = varinfo.stp / 10;
-        if (varinfo.stp < 10) varinfo.stp = 10;
-        if (varinfo.stp > 1000) varinfo.stp = 1000;
+        if (newPosition > oldPosition && varinfo.stp < (sizeof(arraystp) / sizeof(arraystp[0]) - 1)) varinfo.stp = varinfo.stp + 1;
+        if (newPosition < oldPosition && varinfo.stp > 0) varinfo.stp = varinfo.stp - 1;
+        //if (varinfo.stp < 10) varinfo.stp = 10;
+        if (varinfo.stp > (sizeof(arraystp) / sizeof(arraystp[0]) - 1)) varinfo.stp = (sizeof(arraystp) / sizeof(arraystp[0]) - 1);
         break;
 
       case 2: //Настройка IF-SHIFT
-        if (newPosition > oldPosition && varinfo.ifshift <= 3000) varinfo.ifshift = varinfo.ifshift + 10;
-        if (newPosition < oldPosition && varinfo.ifshift >= -3000) varinfo.ifshift = varinfo.ifshift - 10;
+        if (newPosition > oldPosition && varinfo.ifshift <= 3000) varinfo.ifshift = varinfo.ifshift + 50;
+        if (newPosition < oldPosition && varinfo.ifshift >= -3000) varinfo.ifshift = varinfo.ifshift - 50;
         if (varinfo.ifshift > 3000) varinfo.ifshift = 3000;
         if (varinfo.ifshift < -3000) varinfo.ifshift = - 3000;
         losetup();
@@ -251,8 +256,8 @@ void readencoder() { // работа с енкодером
         break;
 
       case 3: //Настройка опорного гетеродина
-        if (newPosition > oldPosition && varinfo.lofreq <= 550000) varinfo.lofreq = varinfo.lofreq + varinfo.stp / 10;
-        if (newPosition < oldPosition && varinfo.lofreq >= 450000) varinfo.lofreq = varinfo.lofreq - varinfo.stp / 10;
+        if (newPosition > oldPosition && varinfo.lofreq <= 550000) varinfo.lofreq = varinfo.lofreq + arraystp[varinfo.stp];
+        if (newPosition < oldPosition && varinfo.lofreq >= 450000) varinfo.lofreq = varinfo.lofreq - arraystp[varinfo.stp];
         if (varinfo.lofreq < 450000) varinfo.lofreq = 450000;
         if (varinfo.lofreq > 550000) varinfo.lofreq = 550000;
         losetup();
@@ -267,8 +272,8 @@ void readencoder() { // работа с енкодером
         break;
 
       case 5: //Настройка калибровки PLL
-        if (newPosition > oldPosition && varinfo.calibration <= 30000) varinfo.calibration = varinfo.calibration + varinfo.stp / 10;
-        if (newPosition < oldPosition && varinfo.calibration >= - 30000) varinfo.calibration = varinfo.calibration - varinfo.stp / 10;
+        if (newPosition > oldPosition && varinfo.calibration <= 30000) varinfo.calibration = varinfo.calibration + arraystp[varinfo.stp];
+        if (newPosition < oldPosition && varinfo.calibration >= - 30000) varinfo.calibration = varinfo.calibration - arraystp[varinfo.stp];
         if (varinfo.calibration > 30000) varinfo.calibration = 30000;
         if (varinfo.calibration <  - 30000) varinfo.calibration =  - 30000;
         si5351.set_correction(varinfo.calibration * 100L, SI5351_PLL_INPUT_XO);
@@ -320,7 +325,7 @@ void powermeter () { // Измеритель уровня выхода
 
 void battmeter () { // Измеритель напряжения питания
   int rawbatt = analogRead(mybattpin);
-  mybatt = (map(rawbatt, 0, 1023, 0, varinfo.battcal)) / 10.0;
+  mybatt = map(rawbatt, 0, 1023, 0, varinfo.battcal);
 }
 
 void mainscreen() { //Процедура рисования главного экрана
@@ -333,8 +338,8 @@ void mainscreen() { //Процедура рисования главного э�
     case 0: //Если не в меню, то рисовать главный экран
       display.println(varinfo.freq / 1000.0);
       display.setTextSize(1);
-      if (mybatt - 10.0 < 0) display.print("0");
-      display.print(mybatt);
+      if (mybatt - 100 < 0) display.print("0");
+      display.print(mybatt / 10.0);
       display.print("v ");
       if (txen) {
         display.print("PWR ");
@@ -357,7 +362,7 @@ void mainscreen() { //Процедура рисования главного э�
       break;
 
     case 1: //Меню 1 - шаг настройки
-      display.println(varinfo.stp);
+      display.println(arraystp[varinfo.stp] * 10);
       display.setTextSize(1);
       display.print(menu);
       display.print("  Step");
@@ -446,23 +451,22 @@ void memwrite () {
     crc += *(adr + i);
     i++;
   }
-  EEPROM.put(2, varinfo);
-  EEPROM.put(0, crc);
+  AT24C32.writeEE(2, varinfo);
+  AT24C32.writeEE(0, crc);
 }
 
 void memread() {
   int crc = 0;
   int crcrom = 0;
   byte i = 0;
-  EEPROM.get(0, crc);
+  AT24C32.readEE (0, crc);
   while (i < (sizeof(varinfo)))
   {
-    crcrom += EEPROM.read((i + 2));
-
+    crcrom += AT24C32.readByte ((i + 2));
     i++;
   }
   if (crc == crcrom) {
-    EEPROM.get(2, varinfo);
+    AT24C32.readEE (2, varinfo);
   }
   else {
     memwrite ();
