@@ -15,7 +15,7 @@
 #define ENCODER_OPTIMIZE_INTERRUPTS
 //#define ENCODER_DO_NOT_USE_INTERRUPTS
 
-char ver[ ] = "v 1.1.1";
+char ver[ ] = "v 1.1.2";
 
 byte ONE_WIRE_BUS = 12; // Порт датчика температуры
 byte myEncBtn = 4;  // Порт нажатия кноба.
@@ -23,7 +23,7 @@ byte mypowerpin = 14; // Порт показометра мощности. А0
 byte mybattpin = 15; // Порт датчика АКБ А1
 byte txpin = 5; //Порт датчика ТХ.
 byte menu = 0; //Начальное положение меню.
-byte arraystp[] = {100, 50, 10}; //шаги настройки * 10 герц.
+byte arraystp[] = {1, 10, 50, 100}; //шаги настройки * 10 герц.
 
 int mypower;
 float mybatt;
@@ -42,14 +42,14 @@ boolean timesetup = false;
 
 
 struct var {
-  int stp = 100;
+  byte stp = 0;
   int battcal = 219;
   unsigned long freq = 3690000UL; // Начальная частота при первом включении.
-  unsigned long lofreq = 496170UL; // Начальная ПЧ при первом включении.
-  int calibration = 17843; // Начальная калибровка при первом включении.
+  unsigned long lofreq = 496000UL; // Начальная ПЧ при первом включении.
+  int calibration = 2000; // Начальная калибровка при первом включении.
   int ifshift = 0; // Начальный сдвиг ПЧ при первом включении.
-  byte minfreq = 36; // *100KHz Минимальный предел частоты
-  byte maxfreq = 37; // *100KHz Максимальный предел частоты
+  byte minfreq = 10; // *100KHz Минимальный предел частоты
+  byte maxfreq = 90; // *100KHz Максимальный предел частоты
 } varinfo;
 
 
@@ -214,19 +214,19 @@ void readencoder() { // работа с енкодером
 
       case 0: //Основная настройка частоты
         if (newPosition > oldPosition && varinfo.freq <= varinfo.maxfreq * 100000UL) {
-          if (varinfo.freq % varinfo.stp) {
-            varinfo.freq = varinfo.freq + varinfo.stp - (varinfo.freq % varinfo.stp);
+          if (varinfo.freq % (arraystp[varinfo.stp]*10)) {
+            varinfo.freq = varinfo.freq + (arraystp[varinfo.stp]*10) - (varinfo.freq % (arraystp[varinfo.stp]*10));
           }
           else {
-            varinfo.freq = varinfo.freq + varinfo.stp;
+            varinfo.freq = varinfo.freq + (arraystp[varinfo.stp]*10);
           }
         }
         if (newPosition < oldPosition && varinfo.freq >= varinfo.minfreq * 100000UL) {
-          if (varinfo.freq % varinfo.stp) {
-            varinfo.freq = varinfo.freq - (varinfo.freq % varinfo.stp);
+          if (varinfo.freq % (arraystp[varinfo.stp]*10)) {
+            varinfo.freq = varinfo.freq - (varinfo.freq % (arraystp[varinfo.stp]*10));
           }
           else {
-            varinfo.freq = varinfo.freq - varinfo.stp;
+            varinfo.freq = varinfo.freq - (arraystp[varinfo.stp]*10);
           }
         }
         if (varinfo.freq < varinfo.minfreq * 100000UL) varinfo.freq = varinfo.minfreq * 100000UL;
@@ -235,15 +235,15 @@ void readencoder() { // работа с енкодером
         break;
 
       case 1: //Настройка ШАГА настройки
-        if (newPosition > oldPosition && varinfo.stp <= 1000) varinfo.stp = varinfo.stp * 10;
-        if (newPosition < oldPosition && varinfo.stp >= 10) varinfo.stp = varinfo.stp / 10;
-        if (varinfo.stp < 10) varinfo.stp = 10;
-        if (varinfo.stp > 1000) varinfo.stp = 1000;
+        if (newPosition > oldPosition && varinfo.stp < (sizeof(arraystp)/sizeof(arraystp[0])-1)) varinfo.stp = varinfo.stp +1;
+        if (newPosition < oldPosition && varinfo.stp > 0) varinfo.stp = varinfo.stp -1;
+        //if (varinfo.stp < 10) varinfo.stp = 10;
+        if (varinfo.stp > (sizeof(arraystp)/sizeof(arraystp[0])-1)) varinfo.stp = (sizeof(arraystp)/sizeof(arraystp[0])-1);
         break;
 
       case 2: //Настройка IF-SHIFT
-        if (newPosition > oldPosition && varinfo.ifshift <= 3000) varinfo.ifshift = varinfo.ifshift + 10;
-        if (newPosition < oldPosition && varinfo.ifshift >= -3000) varinfo.ifshift = varinfo.ifshift - 10;
+        if (newPosition > oldPosition && varinfo.ifshift <= 3000) varinfo.ifshift = varinfo.ifshift + 50;
+        if (newPosition < oldPosition && varinfo.ifshift >= -3000) varinfo.ifshift = varinfo.ifshift - 50;
         if (varinfo.ifshift > 3000) varinfo.ifshift = 3000;
         if (varinfo.ifshift < -3000) varinfo.ifshift = - 3000;
         losetup();
@@ -251,8 +251,8 @@ void readencoder() { // работа с енкодером
         break;
 
       case 3: //Настройка опорного гетеродина
-        if (newPosition > oldPosition && varinfo.lofreq <= 550000) varinfo.lofreq = varinfo.lofreq + varinfo.stp / 10;
-        if (newPosition < oldPosition && varinfo.lofreq >= 450000) varinfo.lofreq = varinfo.lofreq - varinfo.stp / 10;
+        if (newPosition > oldPosition && varinfo.lofreq <= 550000) varinfo.lofreq = varinfo.lofreq + arraystp[varinfo.stp];
+        if (newPosition < oldPosition && varinfo.lofreq >= 450000) varinfo.lofreq = varinfo.lofreq - arraystp[varinfo.stp];
         if (varinfo.lofreq < 450000) varinfo.lofreq = 450000;
         if (varinfo.lofreq > 550000) varinfo.lofreq = 550000;
         losetup();
@@ -267,8 +267,8 @@ void readencoder() { // работа с енкодером
         break;
 
       case 5: //Настройка калибровки PLL
-        if (newPosition > oldPosition && varinfo.calibration <= 30000) varinfo.calibration = varinfo.calibration + varinfo.stp / 10;
-        if (newPosition < oldPosition && varinfo.calibration >= - 30000) varinfo.calibration = varinfo.calibration - varinfo.stp / 10;
+        if (newPosition > oldPosition && varinfo.calibration <= 30000) varinfo.calibration = varinfo.calibration + arraystp[varinfo.stp];
+        if (newPosition < oldPosition && varinfo.calibration >= - 30000) varinfo.calibration = varinfo.calibration - arraystp[varinfo.stp];
         if (varinfo.calibration > 30000) varinfo.calibration = 30000;
         if (varinfo.calibration <  - 30000) varinfo.calibration =  - 30000;
         si5351.set_correction(varinfo.calibration * 100L, SI5351_PLL_INPUT_XO);
@@ -357,7 +357,7 @@ void mainscreen() { //Процедура рисования главного э�
       break;
 
     case 1: //Меню 1 - шаг настройки
-      display.println(varinfo.stp);
+      display.println(arraystp[varinfo.stp]*10);
       display.setTextSize(1);
       display.print(menu);
       display.print("  Step");
@@ -371,6 +371,7 @@ void mainscreen() { //Процедура рисования главного э�
       break;
 
     case 3: //Меню 3 - Настройка опорного гетеродина
+      display.setTextSize(2);
       display.println(varinfo.lofreq);
       display.setTextSize(1);
       display.print(menu);
