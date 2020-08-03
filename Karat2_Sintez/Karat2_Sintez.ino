@@ -1,5 +1,10 @@
 /*
   UD0CAJ Karat2_sintez
+  7-7,2 MHz
+  500N
+  496.570 KHz Lo freq
+  Eeprom24C32 memory using
+  
 */
 #include "Adafruit_SSD1306.h" // Use version 1.2.7!!!
 #include "si5351.h"
@@ -15,7 +20,7 @@
 #define ENCODER_OPTIMIZE_INTERRUPTS
 //#define ENCODER_DO_NOT_USE_INTERRUPTS
 
-char ver[ ] = "v 1.1.2";
+char ver[ ] = "v 1.2.0";
 
 byte ONE_WIRE_BUS = 12; // Порт датчика температуры
 byte myEncBtn = 4;  // Порт нажатия кноба.
@@ -25,10 +30,9 @@ byte txpin = 5; //Порт датчика ТХ.
 byte menu = 0; //Начальное положение меню.
 byte arraystp[] = {1, 10, 50, 100}; //шаги настройки * 10 герц.
 
-int mypower;
-float mybatt;
-float freqprint;
-int temperature;
+byte mypower;
+byte mybatt;
+byte temperature;
 int screenstep = 1000;
 
 long oldPosition  = 0;
@@ -43,13 +47,13 @@ boolean timesetup = false;
 
 struct var {
   byte stp = 0;
-  int battcal = 219;
-  unsigned long freq = 3690000UL; // Начальная частота при первом включении.
-  unsigned long lofreq = 496000UL; // Начальная ПЧ при первом включении.
-  int calibration = 2000; // Начальная калибровка при первом включении.
+  int battcal = 253;
+  unsigned long freq = 7090000UL; // Начальная частота при первом включении.
+  unsigned long lofreq = 496570UL; // Начальная ПЧ при первом включении.
+  int calibration = 2277; // Начальная калибровка при первом включении.
   int ifshift = 0; // Начальный сдвиг ПЧ при первом включении.
-  byte minfreq = 10; // *100KHz Минимальный предел частоты
-  byte maxfreq = 90; // *100KHz Максимальный предел частоты
+  byte minfreq = 70; // *100KHz Минимальный предел частоты
+  byte maxfreq = 72; // *100KHz Максимальный предел частоты
 } varinfo;
 
 
@@ -86,7 +90,6 @@ void setup() {
   si5351.drive_strength(SI5351_CLK0, SI5351_DRIVE_2MA);
   si5351.drive_strength(SI5351_CLK1, SI5351_DRIVE_2MA);
   si5351.set_correction(varinfo.calibration * 100L, SI5351_PLL_INPUT_XO);
-  freqprint = varinfo.freq / 1000.00;
   losetup();
   vfosetup();
   battmeter();
@@ -143,7 +146,7 @@ void tempsensor () {
     reqtemp = true;
   }
   if (millis() - previoustemp > 8000 && reqtemp) {
-    temperature = (int)(0.5 + sensors.getTempCByIndex(0));
+    temperature = (byte)(0.5 + sensors.getTempCByIndex(0));
     previoustemp = millis();
     reqtemp = false;
   }
@@ -252,7 +255,7 @@ void readencoder() { // работа с енкодером
         vfosetup();
         break;
 
-      case 3: //Настройка опорного гетеродина 
+      case 3: //Настройка опорного гетеродина
         if (newPosition > oldPosition && varinfo.lofreq <= 550000) varinfo.lofreq = varinfo.lofreq + arraystp[varinfo.stp];
         if (newPosition < oldPosition && varinfo.lofreq >= 450000) varinfo.lofreq = varinfo.lofreq - arraystp[varinfo.stp];
         if (varinfo.lofreq < 450000) varinfo.lofreq = 450000;
@@ -322,7 +325,7 @@ void powermeter () { // Измеритель уровня выхода
 
 void battmeter () { // Измеритель напряжения питания
   int rawbatt = analogRead(mybattpin);
-  mybatt = (map(rawbatt, 0, 1023, 0, varinfo.battcal)) / 10.0;
+  mybatt = map(rawbatt, 0, 1023, 0, varinfo.battcal);
 }
 
 void mainscreen() { //Процедура рисования главного экрана
@@ -335,8 +338,8 @@ void mainscreen() { //Процедура рисования главного э�
     case 0: //Если не в меню, то рисовать главный экран
       display.println(varinfo.freq / 1000.0);
       display.setTextSize(1);
-      if (mybatt - 10.0 < 0) display.print("0");
-      display.print(mybatt);
+      if (mybatt - 100 < 0) display.print("0");
+      display.print(mybatt / 10.0);
       display.print("v ");
       if (txen) {
         display.print("PWR ");
@@ -373,7 +376,6 @@ void mainscreen() { //Процедура рисования главного э�
       break;
 
     case 3: //Меню 3 - Настройка опорного гетеродина
-      display.setTextSize(2);
       display.println(varinfo.lofreq);
       display.setTextSize(1);
       display.print(menu);
