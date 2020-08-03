@@ -5,7 +5,7 @@
 #include "si5351.h"
 #include "Wire.h"
 #include "Encoder.h"
-#include "EEPROM.h"
+#include "Eeprom24C32_64.h"
 #include "OneWire.h"
 #include "DallasTemperature.h"
 #include "DS1307RTC.h"
@@ -60,6 +60,8 @@ unsigned long previoustime = 0;
 unsigned long knobMillis = 0;
 unsigned long actenc = 0;
 
+
+static Eeprom24C32_64 AT24C32(0x50);
 Si5351 si5351;
 Encoder myEnc(3, 2); //порты подключения енкодера.
 Adafruit_SSD1306 display(4);
@@ -447,23 +449,22 @@ void memwrite () {
     crc += *(adr + i);
     i++;
   }
-  EEPROM.put(2, varinfo);
-  EEPROM.put(0, crc);
+  AT24C32.writeEE(2, varinfo);
+  AT24C32.writeEE(0, crc);
 }
 
 void memread() {
   int crc = 0;
   int crcrom = 0;
   byte i = 0;
-  EEPROM.get(0, crc);
+  AT24C32.readEE (0, crc);
   while (i < (sizeof(varinfo)))
   {
-    crcrom += EEPROM.read((i + 2));
-
+    crcrom += AT24C32.readByte ((i + 2));
     i++;
   }
   if (crc == crcrom) {
-    EEPROM.get(2, varinfo);
+    AT24C32.readEE (2, varinfo);
   }
   else {
     memwrite ();
