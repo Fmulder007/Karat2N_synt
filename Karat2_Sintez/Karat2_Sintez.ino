@@ -184,15 +184,15 @@ void pushknob () {  // Обработка нажатия на кноб
   if (knobdown && !knobup) { //Если кноб отпущен и был нажат
     knobup = true; // отмечаем флаг что кноб отпущен
     long knobupmillis = millis();
-    if (knobupmillis - knobMillis >= 1000) {
-      if (menu != 0) menu = 0; //Переходим на меню дальше
-      if (menu == 0) menu = 3; //Если меню больше 5 выйти на главный экран
+    if (knobupmillis - knobMillis >= 1000) { //Если длительное нажатие
+      if (menu == 0) menu = 3;
+      else if (menu != 0) menu = 0;
     }
 
     if (knobupmillis - knobMillis < 1000 && knobupmillis - knobMillis > 100) { //Если кноб отпущен и был нажат и времени от таймера прошло 100Мс
       menu ++; //Переходим на меню дальше
-      if (menu == 3) menu = 0; //Если меню больше 3 выйти на главный экран
-      if (menu > 9) menu = 0; //Если меню больше 5 выйти на главный экран
+      if (menu == 3) menu = 0; //Если меню 3 выйти на главный экран
+      if (menu > 9) menu = 3; //Если меню больше 9 перейти на меню 3
     }
     mainscreen();
   }
@@ -214,19 +214,19 @@ void readencoder() { // работа с енкодером
 
       case 0: //Основная настройка частоты
         if (newPosition > oldPosition && varinfo.freq <= varinfo.maxfreq * 100000UL) {
-          if (varinfo.freq % (arraystp[varinfo.stp]*10)) {
-            varinfo.freq = varinfo.freq + (arraystp[varinfo.stp]*10) - (varinfo.freq % (arraystp[varinfo.stp]*10));
+          if (varinfo.freq % (arraystp[varinfo.stp] * 10)) {
+            varinfo.freq = varinfo.freq + (arraystp[varinfo.stp] * 10) - (varinfo.freq % (arraystp[varinfo.stp] * 10));
           }
           else {
-            varinfo.freq = varinfo.freq + (arraystp[varinfo.stp]*10);
+            varinfo.freq = varinfo.freq + (arraystp[varinfo.stp] * 10);
           }
         }
         if (newPosition < oldPosition && varinfo.freq >= varinfo.minfreq * 100000UL) {
-          if (varinfo.freq % (arraystp[varinfo.stp]*10)) {
-            varinfo.freq = varinfo.freq - (varinfo.freq % (arraystp[varinfo.stp]*10));
+          if (varinfo.freq % (arraystp[varinfo.stp] * 10)) {
+            varinfo.freq = varinfo.freq - (varinfo.freq % (arraystp[varinfo.stp] * 10));
           }
           else {
-            varinfo.freq = varinfo.freq - (arraystp[varinfo.stp]*10);
+            varinfo.freq = varinfo.freq - (arraystp[varinfo.stp] * 10);
           }
         }
         if (varinfo.freq < varinfo.minfreq * 100000UL) varinfo.freq = varinfo.minfreq * 100000UL;
@@ -235,10 +235,10 @@ void readencoder() { // работа с енкодером
         break;
 
       case 1: //Настройка ШАГА настройки
-        if (newPosition > oldPosition && varinfo.stp < (sizeof(arraystp)/sizeof(arraystp[0])-1)) varinfo.stp = varinfo.stp +1;
-        if (newPosition < oldPosition && varinfo.stp > 0) varinfo.stp = varinfo.stp -1;
+        if (newPosition > oldPosition && varinfo.stp < (sizeof(arraystp) / sizeof(arraystp[0]) - 1)) varinfo.stp = varinfo.stp + 1;
+        if (newPosition < oldPosition && varinfo.stp > 0) varinfo.stp = varinfo.stp - 1;
         //if (varinfo.stp < 10) varinfo.stp = 10;
-        if (varinfo.stp > (sizeof(arraystp)/sizeof(arraystp[0])-1)) varinfo.stp = (sizeof(arraystp)/sizeof(arraystp[0])-1);
+        if (varinfo.stp > (sizeof(arraystp) / sizeof(arraystp[0]) - 1)) varinfo.stp = (sizeof(arraystp) / sizeof(arraystp[0]) - 1);
         break;
 
       case 2: //Настройка IF-SHIFT
@@ -250,7 +250,7 @@ void readencoder() { // работа с енкодером
         vfosetup();
         break;
 
-      case 3: //Настройка опорного гетеродина
+      case 3: //Настройка опорного гетеродина 
         if (newPosition > oldPosition && varinfo.lofreq <= 550000) varinfo.lofreq = varinfo.lofreq + arraystp[varinfo.stp];
         if (newPosition < oldPosition && varinfo.lofreq >= 450000) varinfo.lofreq = varinfo.lofreq - arraystp[varinfo.stp];
         if (varinfo.lofreq < 450000) varinfo.lofreq = 450000;
@@ -357,7 +357,7 @@ void mainscreen() { //Процедура рисования главного э�
       break;
 
     case 1: //Меню 1 - шаг настройки
-      display.println(arraystp[varinfo.stp]*10);
+      display.println(arraystp[varinfo.stp] * 10);
       display.setTextSize(1);
       display.print(menu);
       display.print("  Step");
