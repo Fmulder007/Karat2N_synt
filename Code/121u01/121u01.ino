@@ -1,12 +1,13 @@
 /*
   UD0CAJ Karat2_sintez
-  Si5351 CLK0 for VFO and CLK2 for LO!!!
+  Si5351 CLK0 for VFO and CLK1 for LO!!!
   7-7,2 MHz
   500Hz step add
   Add Eeprom24C32 memory using
   Using si5351a lib from Andrew Bilokon, UR5FFR
   minimal I2C library from from Andrew Bilokon, UR5FFR
 */
+char ver[ ] = "121u01";
 #define SI_OVERCLOCK 750000000L
 #define ENCODER_OPTIMIZE_INTERRUPTS
 
@@ -44,7 +45,7 @@ byte arraystp[] = {1, 10, 50, 100}; //шаги настройки * 10 герц.
 
 //#define ENCODER_DO_NOT_USE_INTERRUPTS
 
-char ver[ ] = "v 1.2.1";
+
 
 byte mypower;
 byte mybatt;
@@ -82,7 +83,7 @@ unsigned long actenc = 0;
 
 
 static Eeprom24C32_64 AT24C32(0x50);
-Si5351 si5351;
+Si5351 si;
 Encoder myEnc(3, 2); //порты подключения енкодера.
 Adafruit_SSD1306 display(4);
 OneWire oneWire(ONE_WIRE_BUS);
@@ -91,6 +92,7 @@ tmElements_t tm;
 
 
 void setup() {
+  Serial.begin(57600);
   pinMode(myEncBtn, INPUT);
   pinMode(mypowerpin, INPUT);
   digitalWrite(myEncBtn, HIGH);
@@ -101,6 +103,7 @@ void setup() {
   sensors.begin();
   memread();
   si5351init();
+  si5351correction();
   vfosetup();
   battmeter();
   powermeter();
@@ -280,8 +283,8 @@ void readencoder() { // работа с енкодером
         if (newPosition > oldPosition && varinfo.calibration <= 30000) varinfo.calibration = varinfo.calibration + arraystp[varinfo.stp];
         if (newPosition < oldPosition && varinfo.calibration >= - 30000) varinfo.calibration = varinfo.calibration - arraystp[varinfo.stp];
         if (varinfo.calibration > 30000) varinfo.calibration = 30000;
-        if (varinfo.calibration <  - 30000) varinfo.calibration =  - 30000;
-        si5351init();
+        if (varinfo.calibration <  -30000) varinfo.calibration =  -30000;
+        si5351correction();
         vfosetup();
         break;
 
@@ -437,12 +440,17 @@ void mainscreen() { //Процедура рисования главного э�
 
 
 void vfosetup() {
-  si5351.set_freq((varinfo.freq + varinfo.lofreq + RXifshift), 0, (varinfo.lofreq + RXifshift));
+  si.set_freq((varinfo.freq + varinfo.lofreq + RXifshift), (varinfo.lofreq + RXifshift));
 }
 
 void si5351init() {
-  si5351.setup(0, 0, 0);
-  si5351.set_xtal_freq(Si_Xtall_Freq + varinfo.calibration);
+  si.setup();
+}
+
+void si5351correction() {
+  si.set_xtal_freq(Si_Xtall_Freq + varinfo.calibration);
+  si.update_freq(0);
+  si.update_freq(1);
 }
 
 void memwrite () {
@@ -484,5 +492,5 @@ void versionprint() {
   display.setTextSize(3);
   display.println(ver);
   display.display();
-  delay(500);
+  delay(1000);
 }

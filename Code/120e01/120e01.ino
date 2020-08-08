@@ -1,11 +1,35 @@
 /*
   UD0CAJ Karat2_sintez
+  Si5351 CLK0 for VFO and CLK1 for LO!!!
   7-7,2 MHz
-  500N
-  496.570 KHz Lo freq
-  Eeprom24C32 memory using
-  
+  500Hz step add
+  Add Eeprom24C32 memory using
+  Using si5351 lib from Etherkit
 */
+#define SI_OVERCLOCK 750000000L
+#define ENCODER_OPTIMIZE_INTERRUPTS
+
+#define start_freq 7090000UL // Начальная частота VFO при первом включении.
+#define start_lo_freq 496003UL // Начальная частота опоры при первом включении.
+#define Si_Xtall_Freq 25000000UL // Частота кварца si5351, Гц
+#define Si_Xtall_calFreq 2277 // Начальная частота калибровки кварца, Гц
+#define lo_max_freq 550000UL // Максимальная частота опоры, Гц
+#define lo_min_freq 450000UL // Минимальная частота опоры, Гц
+#define start_min_freq 70 // *100KHz Минимальный предел частоты диапазона VFO
+#define start_max_freq 72 // *100KHz Максимальный предел частоты диапазона VFO
+#define min_hardware_freq 10 // *100KHz Минимальный железный предел частоты диапазона VFO
+#define max_hardware_freq 250 // *100KHz Максимальный железный предел частоты диапазона VFO
+#define start_batt_cal 253 // Начальная калибровка вольтметра
+#define ONE_WIRE_BUS 12 // Порт датчика температуры
+#define myEncBtn 4 // Порт нажатия кноба.
+#define mypowerpin 14 // Порт показометра мощности. А0
+#define mybattpin 15 // Порт датчика АКБ А1
+#define txpin 5 //Порт датчика ТХ.
+
+
+byte menu = 0; //Начальное положение меню.
+byte arraystp[] = {1, 10, 50, 100}; //шаги настройки * 10 герц.
+
 #include "Adafruit_SSD1306.h" // Use version 1.2.7!!!
 #include "si5351.h"
 #include "Wire.h"
@@ -17,18 +41,9 @@
 
 
 
-#define ENCODER_OPTIMIZE_INTERRUPTS
 //#define ENCODER_DO_NOT_USE_INTERRUPTS
 
-char ver[ ] = "v 1.2.0";
-
-byte ONE_WIRE_BUS = 12; // Порт датчика температуры
-byte myEncBtn = 4;  // Порт нажатия кноба.
-byte mypowerpin = 14; // Порт показометра мощности. А0
-byte mybattpin = 15; // Порт датчика АКБ А1
-byte txpin = 5; //Порт датчика ТХ.
-byte menu = 0; //Начальное положение меню.
-byte arraystp[] = {1, 10, 50, 100}; //шаги настройки * 10 герц.
+char ver[ ] = "120e01";
 
 byte mypower;
 byte mybatt;
@@ -47,13 +62,13 @@ boolean timesetup = false;
 
 struct var {
   byte stp = 0;
-  int battcal = 253;
-  unsigned long freq = 7090000UL; // Начальная частота при первом включении.
-  unsigned long lofreq = 496570UL; // Начальная ПЧ при первом включении.
-  int calibration = 2277; // Начальная калибровка при первом включении.
-  int ifshift = 0; // Начальный сдвиг ПЧ при первом включении.
-  byte minfreq = 70; // *100KHz Минимальный предел частоты
-  byte maxfreq = 72; // *100KHz Максимальный предел частоты
+  int battcal = start_batt_cal;
+  unsigned long freq = start_freq;
+  unsigned long lofreq = start_lo_freq;
+  int calibration = Si_Xtall_calFreq;
+  int ifshift = 0;
+  byte minfreq = start_min_freq;
+  byte maxfreq = start_max_freq;
 } varinfo;
 
 
@@ -84,14 +99,9 @@ void setup() {
   display.display();
   sensors.begin();
   memread();
-  si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);
-  si5351.set_ms_source(SI5351_CLK0, SI5351_PLLA);
-  si5351.set_ms_source(SI5351_CLK1, SI5351_PLLB);
-  si5351.drive_strength(SI5351_CLK0, SI5351_DRIVE_2MA);
-  si5351.drive_strength(SI5351_CLK1, SI5351_DRIVE_2MA);
-  si5351.set_correction(varinfo.calibration * 100L, SI5351_PLL_INPUT_XO);
-  losetup();
+  si5351init();
   vfosetup();
+  losetup();
   battmeter();
   powermeter();
   tempsensor ();
@@ -251,17 +261,17 @@ void readencoder() { // работа с енкодером
         if (newPosition < oldPosition && varinfo.ifshift >= -3000) varinfo.ifshift = varinfo.ifshift - 50;
         if (varinfo.ifshift > 3000) varinfo.ifshift = 3000;
         if (varinfo.ifshift < -3000) varinfo.ifshift = - 3000;
-        losetup();
         vfosetup();
+        losetup();
         break;
 
       case 3: //Настройка опорного гетеродина
-        if (newPosition > oldPosition && varinfo.lofreq <= 550000) varinfo.lofreq = varinfo.lofreq + arraystp[varinfo.stp];
-        if (newPosition < oldPosition && varinfo.lofreq >= 450000) varinfo.lofreq = varinfo.lofreq - arraystp[varinfo.stp];
-        if (varinfo.lofreq < 450000) varinfo.lofreq = 450000;
-        if (varinfo.lofreq > 550000) varinfo.lofreq = 550000;
-        losetup();
+        if (newPosition > oldPosition && varinfo.lofreq <= lo_max_freq) varinfo.lofreq = varinfo.lofreq + arraystp[varinfo.stp];
+        if (newPosition < oldPosition && varinfo.lofreq >= lo_min_freq) varinfo.lofreq = varinfo.lofreq - arraystp[varinfo.stp];
+        if (varinfo.lofreq < lo_min_freq) varinfo.lofreq = lo_min_freq;
+        if (varinfo.lofreq > lo_max_freq) varinfo.lofreq = lo_max_freq;
         vfosetup();
+        losetup();
         break;
 
       case 4: //Настройка калибровки по питанию
@@ -276,23 +286,23 @@ void readencoder() { // работа с енкодером
         if (newPosition < oldPosition && varinfo.calibration >= - 30000) varinfo.calibration = varinfo.calibration - arraystp[varinfo.stp];
         if (varinfo.calibration > 30000) varinfo.calibration = 30000;
         if (varinfo.calibration <  - 30000) varinfo.calibration =  - 30000;
-        si5351.set_correction(varinfo.calibration * 100L, SI5351_PLL_INPUT_XO);
-        losetup();
+        si5351correction();
         vfosetup();
+        losetup();
         break;
 
       case 6: //Настройка minfreq
-        if (newPosition > oldPosition && varinfo.minfreq <= 100) varinfo.minfreq = varinfo.minfreq + 1;
-        if (newPosition < oldPosition && varinfo.minfreq >= 10) varinfo.minfreq = varinfo.minfreq - 1;
-        if (varinfo.minfreq < 10) varinfo.minfreq = 10;
+        if (newPosition > oldPosition && varinfo.minfreq <= max_hardware_freq) varinfo.minfreq = varinfo.minfreq + 1;
+        if (newPosition < oldPosition && varinfo.minfreq >= min_hardware_freq) varinfo.minfreq = varinfo.minfreq - 1;
+        if (varinfo.minfreq < min_hardware_freq) varinfo.minfreq = min_hardware_freq;
         if (varinfo.minfreq >= varinfo.maxfreq) varinfo.minfreq = varinfo.maxfreq - 1;
         break;
 
       case 7: //Настройка maxfreq
-        if (newPosition > oldPosition && varinfo.maxfreq <= 100) varinfo.maxfreq = varinfo.maxfreq + 1;
-        if (newPosition < oldPosition && varinfo.maxfreq >= 10) varinfo.maxfreq = varinfo.maxfreq - 1;
+        if (newPosition > oldPosition && varinfo.maxfreq <= max_hardware_freq) varinfo.maxfreq = varinfo.maxfreq + 1;
+        if (newPosition < oldPosition && varinfo.maxfreq >= min_hardware_freq) varinfo.maxfreq = varinfo.maxfreq - 1;
         if (varinfo.maxfreq <= varinfo.minfreq) varinfo.maxfreq = varinfo.minfreq + 1;
-        if (varinfo.maxfreq > 100) varinfo.maxfreq = 100;
+        if (varinfo.maxfreq > max_hardware_freq) varinfo.maxfreq = max_hardware_freq;
         break;
 
       case 8: //Настройка Часов
@@ -441,6 +451,19 @@ void losetup() {
   si5351.set_freq(((varinfo.lofreq + RXifshift) * 100), SI5351_CLK1);
 }
 
+void si5351init() {
+  si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);
+  si5351.set_ms_source(SI5351_CLK0, SI5351_PLLA);
+  si5351.set_ms_source(SI5351_CLK1, SI5351_PLLB);
+  si5351.drive_strength(SI5351_CLK0, SI5351_DRIVE_2MA);
+  si5351.drive_strength(SI5351_CLK1, SI5351_DRIVE_2MA);
+  si5351correction();
+}
+
+void si5351correction() {
+  si5351.set_correction(varinfo.calibration * 100L, SI5351_PLL_INPUT_XO);
+}
+
 void memwrite () {
   int crc = 0;
   byte i = 0;
@@ -480,5 +503,5 @@ void versionprint() {
   display.setTextSize(3);
   display.println(ver);
   display.display();
-  delay(500);
+  delay(1000);
 }

@@ -39,9 +39,9 @@
 // for fast rdiv shift 
 uint8_t power2[8] = {1,2,4,8,16,32,64,128};
 
-uint32_t Si5351::VCOFreq_Max = 900000000;
-uint32_t Si5351::VCOFreq_Min = 600000000;
-uint32_t Si5351::VCOFreq_Mid = 750000000;
+uint32_t Si5351::VCOFreq_Max = 750000000;
+uint32_t Si5351::VCOFreq_Min = 550000000;
+uint32_t Si5351::VCOFreq_Mid = 650000000;
 
 void si5351_write_reg(uint8_t reg, uint8_t data)
 {
