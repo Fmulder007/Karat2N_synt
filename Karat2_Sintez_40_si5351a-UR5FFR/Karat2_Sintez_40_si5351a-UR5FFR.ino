@@ -1,10 +1,10 @@
 /*
   UD0CAJ Karat2_sintez
+  Si5351 CLK0 for VFO and CLK2 for LO!!!
   7-7,2 MHz
-  500N
-  496.570 KHz Lo freq
-  Eeprom24C32 memory using
-  si5351a lib from Andrew Bilokon, UR5FFR
+  500Hz step add
+  Add Eeprom24C32 memory using
+  Using si5351a lib from Andrew Bilokon, UR5FFR
   minimal I2C library from from Andrew Bilokon, UR5FFR
 */
 #define SI_OVERCLOCK 750000000L
@@ -437,7 +437,7 @@ void mainscreen() { //Процедура рисования главного э�
 
 
 void vfosetup() {
-  si5351.set_freq((varinfo.freq + varinfo.lofreq + RXifshift), (varinfo.lofreq + RXifshift),0);
+  si5351.set_freq((varinfo.freq + varinfo.lofreq + RXifshift), 0, (varinfo.lofreq + RXifshift));
 }
 
 void si5351init() {
