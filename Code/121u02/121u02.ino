@@ -405,21 +405,21 @@ void mainscreen() { //Процедура рисования главного э�
       break;
 
 
-    case 6: //Меню 8 - Настройка minfreq
+    case 6: //Меню 6 - Настройка minfreq
       display.println(varinfo.minfreq * 100);
       display.setTextSize(1);
       display.print(menu);
       display.print("  Min Freq kHz");
       break;
 
-    case 7: //Меню 9 - Настройка maxfreq
+    case 7: //Меню 7 - Настройка maxfreq
       display.println(varinfo.maxfreq * 100);
       display.setTextSize(1);
       display.print(menu);
       display.print("  Max Freq kHz");
       break;
 
-    case 8: //Меню 10 - Настройка Часов
+    case 8: //Меню 8 - Настройка Часов
       if (tm.Hour < 10) display.print("0");
       display.println(tm.Hour);
       display.setTextSize(1);
@@ -427,7 +427,7 @@ void mainscreen() { //Процедура рисования главного э�
       display.print("  Hour");
       break;
 
-    case 9: //Меню 11 - Настройка Минут
+    case 9: //Меню 9 - Настройка Минут
       if (tm.Minute < 10) display.print("0");
       display.println(tm.Minute);
       display.setTextSize(1);
