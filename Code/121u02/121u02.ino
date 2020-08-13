@@ -464,7 +464,7 @@ void memwrite () {
     i++;
   }
   AT24C32.writeEE(2, varinfo);
-  AT24C32.writeEE(0, crc);
+  AT24C32.writeEE(0, (crc+1));
 }
 
 void memread() {
@@ -477,7 +477,7 @@ void memread() {
     crcrom += AT24C32.readByte ((i + 2));
     i++;
   }
-  if (crc == crcrom) {
+  if (crc == (crcrom+1)) {
     AT24C32.readEE (2, varinfo);
   }
   else {
