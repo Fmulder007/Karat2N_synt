@@ -7,7 +7,7 @@
   Using si5351a lib from Andrew Bilokon, UR5FFR
   minimal I2C library from from Andrew Bilokon, UR5FFR
 */
-char ver[ ] = "121u01";
+char ver[ ] = "122u01";
 #define SI_OVERCLOCK 750000000L
 #define ENCODER_OPTIMIZE_INTERRUPTS
 

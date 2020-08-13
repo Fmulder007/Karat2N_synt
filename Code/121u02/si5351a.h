@@ -15,6 +15,13 @@
 #define SI5351_CLK_DRIVE_6MA  2
 #define SI5351_CLK_DRIVE_8MA  3
 
+#define SI5351_CRYSTAL_LOAD             183
+#define SI5351_CRYSTAL_LOAD_MASK        (3<<6)
+#define SI5351_CRYSTAL_LOAD_0PF         (0<<6)
+#define SI5351_CRYSTAL_LOAD_6PF         (1<<6)
+#define SI5351_CRYSTAL_LOAD_8PF         (2<<6)
+#define SI5351_CRYSTAL_LOAD_10PF        (3<<6)
+
 /*
    Feequency plan:
    CLK0 - PLL_A, multisynth integer
@@ -32,6 +39,7 @@ class Si5351 {
     uint32_t xtal_freq, freq_pll_b;
     uint8_t need_reset_pll;
 
+
     static uint32_t VCOFreq_Mid;
 
     void si5351_setup_msynth(uint8_t synth, uint32_t pll_freq);
@@ -41,7 +49,7 @@ class Si5351 {
     void disable_out(uint8_t clk_num); // 0,1,2
     void set_control(uint8_t clk_num, uint8_t ctrl); // 0,1,2
   public:
-
+    void cload(uint8_t xtal_load_c);
     void update_freq(uint8_t clk_num);
     static uint32_t VCOFreq_Max; // == 900000000
     static uint32_t VCOFreq_Min; // == 600000000
