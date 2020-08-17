@@ -7,22 +7,22 @@
   Using si5351a lib from Andrew Bilokon, UR5FFR
   minimal I2C library from from Andrew Bilokon, UR5FFR
 */
-char ver[ ] = "122u01";
+char ver[ ] = "122u02";
 #define SI_OVERCLOCK 750000000L
 #define ENCODER_OPTIMIZE_INTERRUPTS
 
 #define start_freq 7090000UL // Начальная частота VFO при первом включении.
-#define start_lo_freq 496003UL // Начальная частота опоры при первом включении.
-#define Si_Xtall_Freq 25000000UL // Частота кварца si5351, Гц
+#define start_lo_freq 496303UL // Начальная частота опоры при первом включении.
+#define Si_Xtall_Freq 27000000UL // Частота кварца si5351, Гц
 #define si_cload SI5351_CRYSTAL_LOAD_8PF// 
-#define Si_Xtall_calFreq 2277 // Начальная частота калибровки кварца, Гц
+#define Si_Xtall_calFreq 4577 // Начальная частота калибровки кварца, Гц
 #define lo_max_freq 550000UL // Максимальная частота опоры, Гц
 #define lo_min_freq 450000UL // Минимальная частота опоры, Гц
 #define start_min_freq 70 // *100KHz Минимальный предел частоты диапазона VFO
 #define start_max_freq 72 // *100KHz Максимальный предел частоты диапазона VFO
 #define min_hardware_freq 10 // *100KHz Минимальный железный предел частоты диапазона VFO
 #define max_hardware_freq 250 // *100KHz Максимальный железный предел частоты диапазона VFO
-#define start_batt_cal 253 // Начальная калибровка вольтметра
+#define start_batt_cal 212 // Начальная калибровка вольтметра
 #define ONE_WIRE_BUS 12 // Порт датчика температуры
 #define myEncBtn 4 // Порт нажатия кноба.
 #define mypowerpin 14 // Порт показометра мощности. А0
