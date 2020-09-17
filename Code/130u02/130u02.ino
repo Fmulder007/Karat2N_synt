@@ -26,9 +26,9 @@ char ver[ ] = "130u02";
 #define start_batt_cal 212 // Начальная калибровка вольтметра
 #define ONE_WIRE_BUS 12 // Порт датчика температуры
 #define myEncBtn 4 // Порт нажатия кноба.
-#define mypowerpin 15 // Порт показометра мощности. А0
-#define mybattpin 14 // Порт датчика АКБ А1
-#define txpin 16 //Порт датчика ТХ.
+#define mypowerpin 14 // Порт показометра мощности. А0
+#define mybattpin 15 // Порт датчика АКБ А1
+#define txpin 5 //Порт датчика ТХ.
 
 
 byte menu = 0; //Начальное положение меню.
@@ -86,7 +86,7 @@ unsigned long actenc = 0;
 
 static Eeprom24C32_64 AT24C32(0x50);
 Si5351 si;
-Encoder myEnc(3, 2); //порты подключения енкодера.
+Encoder myEnc(2, 3); //порты подключения енкодера.
 Adafruit_SSD1306 display(4);
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
