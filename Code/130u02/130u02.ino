@@ -11,15 +11,15 @@ char ver[ ] = "130u02";
 #define SI_OVERCLOCK 750000000L
 #define ENCODER_OPTIMIZE_INTERRUPTS
 
-#define start_freq 3690000UL // Начальная частота VFO при первом включении.
+#define start_freq 7100000UL // Начальная частота VFO при первом включении.
 #define start_lo_freq 496303UL // Начальная частота опоры при первом включении.
 #define Si_Xtall_Freq 27000000UL // Частота кварца si5351, Гц
 #define si_cload SI5351_CRYSTAL_LOAD_8PF// 
 #define Si_Xtall_calFreq 4577 // Начальная частота калибровки кварца, Гц
 #define lo_max_freq 550000UL // Максимальная частота опоры, Гц
 #define lo_min_freq 450000UL // Минимальная частота опоры, Гц
-#define start_min_freq 35 // *100KHz Минимальный предел частоты диапазона VFO
-#define start_max_freq 38 // *100KHz Максимальный предел частоты диапазона VFO
+#define start_min_freq 70 // *100KHz Минимальный предел частоты диапазона VFO
+#define start_max_freq 72 // *100KHz Максимальный предел частоты диапазона VFO
 #define min_hardware_freq 10 // *100KHz Минимальный железный предел частоты диапазона VFO
 #define max_hardware_freq 250 // *100KHz Максимальный железный предел частоты диапазона VFO
 #define ifstep 50 // Шаг IF-Shift, Гц
