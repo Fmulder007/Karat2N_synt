@@ -86,7 +86,7 @@ unsigned long actenc = 0;
 
 static Eeprom24C32_64 AT24C32(0x50);
 Si5351 si;
-Encoder myEnc(2, 3); //порты подключения енкодера.
+Encoder myEnc(3, 2); //порты подключения енкодера.
 Adafruit_SSD1306 display(4);
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
