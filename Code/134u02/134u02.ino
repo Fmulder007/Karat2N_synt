@@ -30,10 +30,10 @@ char ver[ ] = "134u02";
 struct general_set {
   byte stp_set = 3; //Начальный шаг настройки.
   byte band_set = 0; // Стартовый диапазон.
-  byte number_of_bands_set = 10; // Количество диапазонов.
+  byte number_of_bands_set = 0; // Количество диапазонов.
   unsigned long lo_lsb_freq_set = 496203UL; // Начальная частота опоры LSB при первом включении.
   unsigned long lo_usb_freq_set  =  500000UL; // Начальная частота опоры USB при первом включении.
-  int Si_Xtall_calFreq_set = 5000; // Начальная частота калибровки кварца, Гц.
+  int Si_Xtall_calFreq_set = 5800; // Начальная частота калибровки кварца, Гц.
   int ifshift_set = 0;
   byte batt_cal_set = 212; // Начальная калибровка вольтметра.
   boolean reverse_encoder_set = false; //Реверс энкодера.
