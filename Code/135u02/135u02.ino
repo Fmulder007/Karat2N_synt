@@ -3,6 +3,12 @@ char ver[ ] = "135u02";
 #define SI_OVERCLOCK 750000000L
 #define ENCODER_OPTIMIZE_INTERRUPTS
 
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define OLED_I2C_ADRESS 0x3C // Display I2c adress
+
 #define max_number_of_bands	99 // Максимальное оличество диапазонов.
 #define Si_Xtall_Freq 27000000UL // Частота кварца si5351, Гц.
 #define si_cload SI5351_CRYSTAL_LOAD_8PF// 
@@ -98,7 +104,7 @@ unsigned long actenc = 0;
 static Eeprom24C32_64 AT24C32(0x50);
 Si5351 si;
 Encoder myEnc(2, 3); //порты подключения енкодера.
-Adafruit_SSD1306 display(4);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 tmElements_t tm;
@@ -111,7 +117,7 @@ void setup() {
   pinMode(tonepin, OUTPUT);
   digitalWrite(myEncBtn, HIGH);
   analogReference(INTERNAL);
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADRESS);
   display.clearDisplay();
   display.display();
   sensors.begin();
