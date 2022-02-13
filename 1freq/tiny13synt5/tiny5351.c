@@ -60,10 +60,10 @@ void si5351_freq(uint32_t freq, uint8_t clk) //, uint8_t i, uint8_t q
   pll_freq = (SI_XTAL_FREQ * 20);
   div_result output = tdivide(pll_freq, freq);
   si5351_mult = output.quot;
-  uint32_t l =  output.remainder << 11;
+  uint32_t l =  output.remainder << 8;
   output = tdivide(l, freq);
   l = output.quot;
-  l = l << 9;
+  l = l << 12;
   uint32_t num = l;
   const uint32_t denom = 0xFFFFF;
   setupPLL((SI_SYNTH_MS_0 + (8 * clk)), si5351_mult, num, denom, SI_R_DIV_1);
