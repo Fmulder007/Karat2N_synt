@@ -1,0 +1,1193 @@
+
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503/tiny13synt7.ino.elf:     file format elf32-avr
+
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+__vectors():
+   0:	09 c0       	rjmp	.+18     	; 0x14 <__ctors_end>
+   2:	ac c0       	rjmp	.+344    	; 0x15c <__bad_interrupt>
+   4:	ab c0       	rjmp	.+342    	; 0x15c <__bad_interrupt>
+   6:	aa c0       	rjmp	.+340    	; 0x15c <__bad_interrupt>
+   8:	a9 c0       	rjmp	.+338    	; 0x15c <__bad_interrupt>
+   a:	a8 c0       	rjmp	.+336    	; 0x15c <__bad_interrupt>
+   c:	a7 c0       	rjmp	.+334    	; 0x15c <__bad_interrupt>
+   e:	a6 c0       	rjmp	.+332    	; 0x15c <__bad_interrupt>
+  10:	a5 c0       	rjmp	.+330    	; 0x15c <__bad_interrupt>
+  12:	a4 c0       	rjmp	.+328    	; 0x15c <__bad_interrupt>
+
+00000014 <__ctors_end>:
+__trampolines_start():
+  14:	11 24       	eor	r1, r1
+  16:	1f be       	out	0x3f, r1	; 63
+  18:	cf e9       	ldi	r28, 0x9F	; 159
+  1a:	cd bf       	out	0x3d, r28	; 61
+
+0000001c <__do_clear_bss>:
+__do_clear_bss():
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2441
+  1c:	20 e0       	ldi	r18, 0x00	; 0
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2442
+  1e:	a0 e6       	ldi	r26, 0x60	; 96
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2443
+  20:	b0 e0       	ldi	r27, 0x00	; 0
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2444
+  22:	01 c0       	rjmp	.+2      	; 0x26 <.do_clear_bss_start>
+
+00000024 <.do_clear_bss_loop>:
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2446
+  24:	1d 92       	st	X+, r1
+
+00000026 <.do_clear_bss_start>:
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2448
+  26:	a3 36       	cpi	r26, 0x63	; 99
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2449
+  28:	b2 07       	cpc	r27, r18
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2450
+  2a:	e1 f7       	brne	.-8      	; 0x24 <.do_clear_bss_loop>
+.do_clear_bss_start():
+  2c:	01 d0       	rcall	.+2      	; 0x30 <main>
+  2e:	e6 c1       	rjmp	.+972    	; 0x3fc <_exit>
+
+00000030 <main>:
+main():
+C:\Users\fm\AppData\Local\Arduino15\packages\MicroCore\hardware\avr\2.2.0\cores\microcore/main.cpp:16
+  
+#include "Arduino.h"
+
+__attribute__(( section(".init9") ))
+int main()
+{
+  30:	cf 93       	push	r28
+  32:	df 93       	push	r29
+  34:	cd b7       	in	r28, 0x3d	; 61
+  36:	dd 27       	eor	r29, r29
+  38:	c8 50       	subi	r28, 0x08	; 8
+  3a:	cd bf       	out	0x3d, r28	; 61
+init():
+C:\Users\fm\AppData\Local\Arduino15\packages\MicroCore\hardware\avr\2.2.0\cores\microcore/wiring.c:164
+    // Set timer0 couter to zero
+    TCNT0 = 0;
+  #endif
+
+  // Turn on global interrupts
+  sei();
+  3c:	78 94       	sei
+setup():
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:15
+uint8_t count = 0;
+
+
+
+void setup() {
+  DDRB &= ~(1 << PB3);      // For attiny it is PB3 for adc input
+  3e:	bb 98       	cbi	0x17, 3	; 23
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:16
+  ADMUX |= (0 << REFS0) | (1 << MUX1) | (1 << MUX0); // set reference and channel
+  40:	87 b1       	in	r24, 0x07	; 7
+  42:	83 60       	ori	r24, 0x03	; 3
+  44:	87 b9       	out	0x07, r24	; 7
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:17
+  ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0) | (1 << ADEN); //set prescaller to 128 and enable ADC
+  46:	86 b1       	in	r24, 0x06	; 6
+  48:	87 68       	ori	r24, 0x87	; 135
+  4a:	86 b9       	out	0x06, r24	; 6
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:18
+  sei();
+  4c:	78 94       	sei
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:19
+  if (!ReadADC()) prv_ch++;
+  4e:	1e d1       	rcall	.+572    	; 0x28c <ReadADC()>
+  50:	89 2b       	or	r24, r25
+  52:	49 f4       	brne	.+18     	; 0x66 <__SREG__+0x27>
+  54:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+  58:	90 91 61 00 	lds	r25, 0x0061	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+  5c:	01 96       	adiw	r24, 0x01	; 1
+  5e:	90 93 61 00 	sts	0x0061, r25	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+  62:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__DATA_REGION_ORIGIN__>
+loop():
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:23
+}
+
+void loop() {
+  uint16_t ch = ReadADC();
+  66:	12 d1       	rcall	.+548    	; 0x28c <ReadADC()>
+  68:	5c 01       	movw	r10, r24
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:24
+  if (ch == ReadADC()) {
+  6a:	10 d1       	rcall	.+544    	; 0x28c <ReadADC()>
+  6c:	a8 16       	cp	r10, r24
+  6e:	b9 06       	cpc	r11, r25
+  70:	09 f0       	breq	.+2      	; 0x74 <__SREG__+0x35>
+  72:	71 c0       	rjmp	.+226    	; 0x156 <__stack+0xb7>
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:25
+    count++;
+  74:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <count>
+  78:	8f 5f       	subi	r24, 0xFF	; 255
+  7a:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <count>
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:30
+  }
+  else {
+    count = 0;
+  }
+  if (prv_ch != ch && count >= 24) {
+  7e:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+  82:	90 91 61 00 	lds	r25, 0x0061	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+  86:	a8 16       	cp	r10, r24
+  88:	b9 06       	cpc	r11, r25
+  8a:	69 f3       	breq	.-38     	; 0x66 <__SREG__+0x27>
+  8c:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <count>
+  90:	88 31       	cpi	r24, 0x18	; 24
+  92:	48 f3       	brcs	.-46     	; 0x66 <__SREG__+0x27>
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:32
+    //si5351_freq(frequency + (ch << 8) , 0);
+    si5351_freq(frequency + tmultiply(ch, 50) , 0);
+  94:	b5 01       	movw	r22, r10
+  96:	90 e0       	ldi	r25, 0x00	; 0
+  98:	80 e0       	ldi	r24, 0x00	; 0
+  9a:	22 e3       	ldi	r18, 0x32	; 50
+  9c:	30 e0       	ldi	r19, 0x00	; 0
+  9e:	40 e0       	ldi	r20, 0x00	; 0
+  a0:	50 e0       	ldi	r21, 0x00	; 0
+  a2:	9c d0       	rcall	.+312    	; 0x1dc <tmultiply>
+  a4:	3a 01       	movw	r6, r20
+  a6:	29 01       	movw	r4, r18
+  a8:	80 e6       	ldi	r24, 0x60	; 96
+  aa:	48 0e       	add	r4, r24
+  ac:	8d e4       	ldi	r24, 0x4D	; 77
+  ae:	58 1e       	adc	r5, r24
+  b0:	8f e2       	ldi	r24, 0x2F	; 47
+  b2:	68 1e       	adc	r6, r24
+  b4:	71 1c       	adc	r7, r1
+si5351_freq():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:57
+void si5351_freq(uint32_t freq, uint8_t clk) //, uint8_t i, uint8_t q
+{
+  uint8_t si5351_mult;
+  uint64_t pll_freq;
+  //uint8_t r_div = 1;
+  i2c_init();
+  b6:	59 d0       	rcall	.+178    	; 0x16a <i2c_init>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:58
+  setupPLL(SI_SYNTH_PLL_A, 19, 0, 1, R_DIV_NA);
+  b8:	cc 24       	eor	r12, r12
+  ba:	ca 94       	dec	r12
+  bc:	e1 2c       	mov	r14, r1
+  be:	f1 2c       	mov	r15, r1
+  c0:	87 01       	movw	r16, r14
+  c2:	e3 94       	inc	r14
+  c4:	20 e0       	ldi	r18, 0x00	; 0
+  c6:	30 e0       	ldi	r19, 0x00	; 0
+  c8:	a9 01       	movw	r20, r18
+  ca:	63 e1       	ldi	r22, 0x13	; 19
+  cc:	8a e1       	ldi	r24, 0x1A	; 26
+  ce:	f3 d0       	rcall	.+486    	; 0x2b6 <setupPLL>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:61
+  //setupPLL(SI_SYNTH_PLL_B, 30, 0, 1,R_DIV_NA);
+  pll_freq = (SI_XTAL_FREQ * 19);
+  div_result output = tdivide(pll_freq, freq);
+  d0:	a3 01       	movw	r20, r6
+  d2:	92 01       	movw	r18, r4
+  d4:	6f e3       	ldi	r22, 0x3F	; 63
+  d6:	78 e1       	ldi	r23, 0x18	; 24
+  d8:	89 e9       	ldi	r24, 0x99	; 153
+  da:	9e e1       	ldi	r25, 0x1E	; 30
+  dc:	b0 d0       	rcall	.+352    	; 0x23e <tdivide>
+  de:	96 2e       	mov	r9, r22
+  e0:	29 83       	std	Y+1, r18	; 0x01
+  e2:	3a 83       	std	Y+2, r19	; 0x02
+  e4:	4b 83       	std	Y+3, r20	; 0x03
+  e6:	5c 83       	std	Y+4, r21	; 0x04
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:63
+  si5351_mult = output.quot;
+  uint32_t l =  output.remainder << 10;
+  e8:	69 81       	ldd	r22, Y+1	; 0x01
+  ea:	7a 81       	ldd	r23, Y+2	; 0x02
+  ec:	8b 81       	ldd	r24, Y+3	; 0x03
+  ee:	9c 81       	ldd	r25, Y+4	; 0x04
+  f0:	2a e0       	ldi	r18, 0x0A	; 10
+  f2:	66 0f       	add	r22, r22
+  f4:	77 1f       	adc	r23, r23
+  f6:	88 1f       	adc	r24, r24
+  f8:	99 1f       	adc	r25, r25
+  fa:	2a 95       	dec	r18
+  fc:	d1 f7       	brne	.-12     	; 0xf2 <__stack+0x53>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:64
+  output = tdivide(l, freq);
+  fe:	a3 01       	movw	r20, r6
+ 100:	92 01       	movw	r18, r4
+ 102:	9d d0       	rcall	.+314    	; 0x23e <tdivide>
+ 104:	6d 83       	std	Y+5, r22	; 0x05
+ 106:	7e 83       	std	Y+6, r23	; 0x06
+ 108:	8f 83       	std	Y+7, r24	; 0x07
+ 10a:	98 87       	std	Y+8, r25	; 0x08
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:66
+  l = output.quot;
+  l = l << 10;
+ 10c:	2d 81       	ldd	r18, Y+5	; 0x05
+ 10e:	3e 81       	ldd	r19, Y+6	; 0x06
+ 110:	4f 81       	ldd	r20, Y+7	; 0x07
+ 112:	58 85       	ldd	r21, Y+8	; 0x08
+ 114:	6a e0       	ldi	r22, 0x0A	; 10
+ 116:	22 0f       	add	r18, r18
+ 118:	33 1f       	adc	r19, r19
+ 11a:	44 1f       	adc	r20, r20
+ 11c:	55 1f       	adc	r21, r21
+ 11e:	6a 95       	dec	r22
+ 120:	d1 f7       	brne	.-12     	; 0x116 <__stack+0x77>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:69
+  uint32_t num = l;
+  const uint32_t denom = 0xFFFFF;
+  setupPLL((SI_SYNTH_MS_0 + (8 * clk)), si5351_mult, num, denom, SI_R_DIV_1);
+ 122:	c1 2c       	mov	r12, r1
+ 124:	ee 24       	eor	r14, r14
+ 126:	ea 94       	dec	r14
+ 128:	fe 2c       	mov	r15, r14
+ 12a:	0f e0       	ldi	r16, 0x0F	; 15
+ 12c:	10 e0       	ldi	r17, 0x00	; 0
+ 12e:	69 2d       	mov	r22, r9
+ 130:	8a e2       	ldi	r24, 0x2A	; 42
+ 132:	c1 d0       	rcall	.+386    	; 0x2b6 <setupPLL>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:70
+  i2cSendRegister((SI_CLK0_CONTROL + clk), (0x4C + SI_outPWR) | SI_CLK_SRC_PLL_A);
+ 134:	6c e4       	ldi	r22, 0x4C	; 76
+ 136:	80 e1       	ldi	r24, 0x10	; 16
+ 138:	af d0       	rcall	.+350    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:71
+  i2cSendRegister(SI_PLL_RESET, 0xA0);
+ 13a:	60 ea       	ldi	r22, 0xA0	; 160
+ 13c:	81 eb       	ldi	r24, 0xB1	; 177
+ 13e:	ac d0       	rcall	.+344    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:72
+  i2cSendRegister(SI_CLK_OE,  ~(1 << clk)); // Enable
+ 140:	6e ef       	ldi	r22, 0xFE	; 254
+ 142:	83 e0       	ldi	r24, 0x03	; 3
+ 144:	a9 d0       	rcall	.+338    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:73
+  i2c_exit();						// Exit I2C
+ 146:	16 d0       	rcall	.+44     	; 0x174 <i2c_exit>
+loop():
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:33
+    prv_ch = ch;
+ 148:	b0 92 61 00 	sts	0x0061, r11	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+ 14c:	a0 92 60 00 	sts	0x0060, r10	; 0x800060 <__DATA_REGION_ORIGIN__>
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:34
+    count = 0;
+ 150:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <count>
+ 154:	88 cf       	rjmp	.-240    	; 0x66 <__SREG__+0x27>
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:28
+  uint16_t ch = ReadADC();
+  if (ch == ReadADC()) {
+    count++;
+  }
+  else {
+    count = 0;
+ 156:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <count>
+ 15a:	91 cf       	rjmp	.-222    	; 0x7e <__SREG__+0x3f>
+
+0000015c <__bad_interrupt>:
+__vector_1():
+ 15c:	51 cf       	rjmp	.-350    	; 0x0 <__vectors>
+
+0000015e <i2c_delay_T2>:
+i2c_delay_T2():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:112
+;
+; Delay 72 cycles
+; 4us 500 ns at 16 MHz
+.func i2c_delay_T2	; delay 5.0 microsec with 4 Mhz crystal	
+i2c_delay_T2:        ; 4 cycles
+    push r18
+ 15e:	2f 93       	push	r18
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:113
+    ldi  r18, 22
+ 160:	26 e1       	ldi	r18, 0x16	; 22
+
+00000162 <L1>:
+L1():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:114
+L1: dec  r18
+ 162:	2a 95       	dec	r18
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:115
+    brne L1
+ 164:	f1 f7       	brne	.-4      	; 0x162 <L1>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:116
+	pop  r18
+ 166:	2f 91       	pop	r18
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:117
+	ret
+ 168:	08 95       	ret
+
+0000016a <i2c_init>:
+i2c_init():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:128
+; extern void i2c_init(void)
+;*************************************************************************
+	.global i2c_init
+	.func i2c_init
+i2c_init:
+	cbi SDA_DDR,SDA		;release SDA
+ 16a:	ba 98       	cbi	0x17, 2	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:129
+	cbi SCL_DDR,SCL		;release SCL
+ 16c:	b9 98       	cbi	0x17, 1	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:130
+	cbi SDA_OUT,SDA
+ 16e:	c2 98       	cbi	0x18, 2	; 24
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:131
+	cbi SCL_OUT,SCL
+ 170:	c1 98       	cbi	0x18, 1	; 24
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:132
+	ret
+ 172:	08 95       	ret
+
+00000174 <i2c_exit>:
+i2c_exit():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:143
+; extern void i2c_init(void)
+;*************************************************************************
+	.global i2c_exit
+	.func i2c_exit
+i2c_exit:
+	sbi SDA_DDR,SDA		;make SDA pin output again
+ 174:	ba 9a       	sbi	0x17, 2	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:144
+	ret
+ 176:	08 95       	ret
+
+00000178 <i2c_start>:
+i2c_start():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:158
+;*************************************************************************
+
+	.global i2c_start
+	.func   i2c_start
+i2c_start:
+	sbi 	SDA_DDR,SDA	;force SDA low
+ 178:	ba 9a       	sbi	0x17, 2	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:159
+	rcall 	i2c_delay_T2	;delay T/2
+ 17a:	f1 df       	rcall	.-30     	; 0x15e <i2c_delay_T2>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:161
+	
+	rcall 	i2c_write	;write address
+ 17c:	13 d0       	rcall	.+38     	; 0x1a4 <i2c_write>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:162
+	ret
+ 17e:	08 95       	ret
+
+00000180 <i2c_start_wait>:
+i2c_start_wait():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:178
+;*************************************************************************
+
+	.global i2c_start_wait
+	.func   i2c_start_wait
+i2c_start_wait:
+	mov	__tmp_reg__,r24
+ 180:	08 2e       	mov	r0, r24
+
+00000182 <i2c_start_wait1>:
+i2c_start_wait1():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:180
+i2c_start_wait1:
+	sbi 	SDA_DDR,SDA	;force SDA low
+ 182:	ba 9a       	sbi	0x17, 2	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:181
+	rcall 	i2c_delay_T2	;delay T/2
+ 184:	ec df       	rcall	.-40     	; 0x15e <i2c_delay_T2>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:182
+	mov	r24,__tmp_reg__
+ 186:	80 2d       	mov	r24, r0
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:183
+	rcall 	i2c_write	;write address
+ 188:	0d d0       	rcall	.+26     	; 0x1a4 <i2c_write>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:184
+	tst	r24		;if device not busy -> done
+ 18a:	88 23       	and	r24, r24
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:185
+	breq	i2c_start_wait_done
+ 18c:	11 f0       	breq	.+4      	; 0x192 <i2c_start_wait_done>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:186
+	rcall	i2c_stop	;terminate write operation
+ 18e:	02 d0       	rcall	.+4      	; 0x194 <i2c_stop>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:187
+	rjmp	i2c_start_wait1	;device busy, poll ack again
+ 190:	f8 cf       	rjmp	.-16     	; 0x182 <i2c_start_wait1>
+
+00000192 <i2c_start_wait_done>:
+i2c_start_wait_done():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:189
+i2c_start_wait_done:
+	ret
+ 192:	08 95       	ret
+
+00000194 <i2c_stop>:
+i2c_stop():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:202
+;*************************************************************************
+
+	.global	i2c_stop
+	.func	i2c_stop
+i2c_stop:
+	sbi	SCL_DDR,SCL	;force SCL low
+ 194:	b9 9a       	sbi	0x17, 1	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:203
+	sbi	SDA_DDR,SDA	;force SDA low
+ 196:	ba 9a       	sbi	0x17, 2	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:204
+	rcall	i2c_delay_T2	;delay T/2
+ 198:	e2 df       	rcall	.-60     	; 0x15e <i2c_delay_T2>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:205
+	cbi	SCL_DDR,SCL	;release SCL
+ 19a:	b9 98       	cbi	0x17, 1	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:206
+	rcall	i2c_delay_T2	;delay T/2
+ 19c:	e0 df       	rcall	.-64     	; 0x15e <i2c_delay_T2>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:207
+	cbi	SDA_DDR,SDA	;release SDA
+ 19e:	ba 98       	cbi	0x17, 2	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:208
+	rcall	i2c_delay_T2	;delay T/2
+ 1a0:	de df       	rcall	.-68     	; 0x15e <i2c_delay_T2>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:209
+	ret
+ 1a2:	08 95       	ret
+
+000001a4 <i2c_write>:
+i2c_write():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:223
+;	data = r24,  return = r25(=0):r24
+;*************************************************************************
+	.global i2c_write
+	.func	i2c_write
+i2c_write:
+	sec			;set carry flag
+ 1a4:	08 94       	sec
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:224
+	rol 	r24		;shift in carry and out bit one
+ 1a6:	88 1f       	adc	r24, r24
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:225
+	rjmp	i2c_write_first
+ 1a8:	01 c0       	rjmp	.+2      	; 0x1ac <i2c_write_first>
+
+000001aa <i2c_write_bit>:
+i2c_write_bit():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:227
+i2c_write_bit:
+	lsl	r24		;if transmit register empty
+ 1aa:	88 0f       	add	r24, r24
+
+000001ac <i2c_write_first>:
+i2c_write_first():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:229
+i2c_write_first:
+	breq	i2c_get_ack
+ 1ac:	59 f0       	breq	.+22     	; 0x1c4 <i2c_get_ack>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:230
+	sbi	SCL_DDR,SCL	;force SCL low
+ 1ae:	b9 9a       	sbi	0x17, 1	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:231
+	brcc	i2c_write_low
+ 1b0:	18 f4       	brcc	.+6      	; 0x1b8 <i2c_write_low>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:232
+	nop
+ 1b2:	00 00       	nop
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:233
+	cbi	SDA_DDR,SDA	;release SDA
+ 1b4:	ba 98       	cbi	0x17, 2	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:234
+	rjmp	i2c_write_high
+ 1b6:	02 c0       	rjmp	.+4      	; 0x1bc <i2c_write_high>
+
+000001b8 <i2c_write_low>:
+i2c_write_low():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:236
+i2c_write_low:
+	sbi	SDA_DDR,SDA	;force SDA low
+ 1b8:	ba 9a       	sbi	0x17, 2	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:237
+	rjmp	i2c_write_high
+ 1ba:	00 c0       	rjmp	.+0      	; 0x1bc <i2c_write_high>
+
+000001bc <i2c_write_high>:
+i2c_write_high():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:239
+i2c_write_high:
+	rcall 	i2c_delay_T2	;delay T/2
+ 1bc:	d0 df       	rcall	.-96     	; 0x15e <i2c_delay_T2>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:240
+	cbi	SCL_DDR,SCL	;release SCL
+ 1be:	b9 98       	cbi	0x17, 1	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:241
+	rcall	i2c_delay_T2	;delay T/2
+ 1c0:	ce df       	rcall	.-100    	; 0x15e <i2c_delay_T2>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:242
+	rjmp	i2c_write_bit
+ 1c2:	f3 cf       	rjmp	.-26     	; 0x1aa <i2c_write_bit>
+
+000001c4 <i2c_get_ack>:
+i2c_get_ack():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:245
+	
+i2c_get_ack:
+	sbi	SCL_DDR,SCL	;force SCL low
+ 1c4:	b9 9a       	sbi	0x17, 1	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:246
+	cbi	SDA_DDR,SDA	;release SDA
+ 1c6:	ba 98       	cbi	0x17, 2	; 23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:247
+	rcall	i2c_delay_T2	;delay T/2
+ 1c8:	ca df       	rcall	.-108    	; 0x15e <i2c_delay_T2>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:248
+	cbi	SCL_DDR,SCL	;release SCL
+ 1ca:	b9 98       	cbi	0x17, 1	; 23
+
+000001cc <i2c_ack_wait>:
+i2c_ack_wait():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:251
+i2c_ack_wait:
+    ;ret
+	sbis	SCL_IN,SCL	;wait SCL high (in case wait states are inserted)
+ 1cc:	b1 9b       	sbis	0x16, 1	; 22
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:252
+	rjmp	i2c_ack_wait
+ 1ce:	fe cf       	rjmp	.-4      	; 0x1cc <i2c_ack_wait>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:254
+	
+	clr	r24		;return 0
+ 1d0:	88 27       	eor	r24, r24
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:255
+	sbic	SDA_IN,SDA	;if SDA high -> return 1
+ 1d2:	b2 99       	sbic	0x16, 2	; 22
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:256
+	ldi	r24,1
+ 1d4:	81 e0       	ldi	r24, 0x01	; 1
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:257
+	rcall	i2c_delay_T2	;delay T/2
+ 1d6:	c3 df       	rcall	.-122    	; 0x15e <i2c_delay_T2>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:258
+	clr	r25
+ 1d8:	99 27       	eor	r25, r25
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/i2cmaster.S:259
+	ret
+ 1da:	08 95       	ret
+
+000001dc <tmultiply>:
+tmultiply():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:17
+;;  Arg 1 in R25-R24-r23-r22
+;;  Arg 2 in R21-R20-r19-r18
+;;  return in R25-r24-r23-r22-r21-r20-r19-r18 
+
+tmultiply:
+        push    r2              ; save working registers
+ 1dc:	2f 92       	push	r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:18
+        push    r3              ; 
+ 1de:	3f 92       	push	r3
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:19
+        push    r4
+ 1e0:	4f 92       	push	r4
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:20
+        push    r5
+ 1e2:	5f 92       	push	r5
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:21
+		push    r6
+ 1e4:	6f 92       	push	r6
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:22
+		push    r7
+ 1e6:	7f 92       	push	r7
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:23
+        push    r16
+ 1e8:	0f 93       	push	r16
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:30
+		
+        ;CLR   r0         ;Initialize Answer to zero 
+        ;CLR   r1         ;
+        ;CLR   r2         ;
+        ;CLR   r3         ; 
+        CLR   r4         ;
+ 1ea:	44 24       	eor	r4, r4
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:31
+        CLR   r5         ;
+ 1ec:	55 24       	eor	r5, r5
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:32
+        CLR   r6         ;
+ 1ee:	66 24       	eor	r6, r6
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:33
+        SUB   r7,r7    ;Clear r7 and Carry Flag
+ 1f0:	77 18       	sub	r7, r7
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:34
+        MOV   r0,r22      ;Copy Multiplier to Answer
+ 1f2:	06 2e       	mov	r0, r22
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:35
+        MOV   r1,r23      ;
+ 1f4:	17 2e       	mov	r1, r23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:36
+        MOV   r2,r24      ;
+ 1f6:	28 2e       	mov	r2, r24
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:37
+        MOV   r3,r25      ; 
+ 1f8:	39 2e       	mov	r3, r25
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:38
+        LDI   r16,33         ;Set Loop Counter to 33 
+ 1fa:	01 e2       	ldi	r16, 0x21	; 33
+
+000001fc <LOOP>:
+LOOP():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:40
+LOOP: 
+        ROR   r3         ;Shift Multiplier to right
+ 1fc:	37 94       	ror	r3
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:41
+        ROR   r2         ;
+ 1fe:	27 94       	ror	r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:42
+        ROR   r1         ;
+ 200:	17 94       	ror	r1
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:43
+        ROR   r0         ;
+ 202:	07 94       	ror	r0
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:44
+        DEC   r16            ;Decrement Loop Counter 
+ 204:	0a 95       	dec	r16
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:45
+        BREQ DONE         ;Check if all bits processed 
+ 206:	51 f0       	breq	.+20     	; 0x21c <DONE>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:46
+        BRCC SKIP        ;If Carry Clear skip addition
+ 208:	20 f4       	brcc	.+8      	; 0x212 <SKIP>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:47
+        ADD   r4,r18      ;Add Multipicand into Answer
+ 20a:	42 0e       	add	r4, r18
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:48
+        ADC   r5,r19      ;
+ 20c:	53 1e       	adc	r5, r19
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:49
+        ADC   r6,r20      ;
+ 20e:	64 1e       	adc	r6, r20
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:50
+        ADC   r7,r21      ;
+ 210:	75 1e       	adc	r7, r21
+
+00000212 <SKIP>:
+SKIP():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:52
+SKIP:
+        ROR   r7         ;Shift high bytes of Answer
+ 212:	77 94       	ror	r7
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:53
+        ROR   r6         ;
+ 214:	67 94       	ror	r6
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:54
+        ROR   r5         ;
+ 216:	57 94       	ror	r5
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:55
+        ROR   r4         ;
+ 218:	47 94       	ror	r4
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:56
+        RJMP LOOP
+ 21a:	f0 cf       	rjmp	.-32     	; 0x1fc <LOOP>
+
+0000021c <DONE>:
+DONE():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:58
+DONE:
+		MOV   r25,r7      ;
+ 21c:	97 2d       	mov	r25, r7
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:59
+        MOV   r24,r6      ;
+ 21e:	86 2d       	mov	r24, r6
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:60
+        MOV   r23,r5      ;
+ 220:	75 2d       	mov	r23, r5
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:61
+        MOV   r22,r4      ; 
+ 222:	64 2d       	mov	r22, r4
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:62
+		MOV   r21,r3      ;
+ 224:	53 2d       	mov	r21, r3
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:63
+        MOV   r20,r2      ;
+ 226:	42 2d       	mov	r20, r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:64
+        MOV   r19,r1      ;
+ 228:	31 2d       	mov	r19, r1
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:65
+        MOV   r18,r0      ; 
+ 22a:	20 2d       	mov	r18, r0
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:67
+		;; restore registers
+        pop     r16
+ 22c:	0f 91       	pop	r16
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:68
+		pop     r7
+ 22e:	7f 90       	pop	r7
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:69
+		pop     r6
+ 230:	6f 90       	pop	r6
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:70
+        pop     r5
+ 232:	5f 90       	pop	r5
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:71
+        pop     r4
+ 234:	4f 90       	pop	r4
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:72
+        pop     r3
+ 236:	3f 90       	pop	r3
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:73
+        pop     r2
+ 238:	2f 90       	pop	r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:74
+        clr     r1              ; clear zero register
+ 23a:	11 24       	eor	r1, r1
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:75
+		RET
+ 23c:	08 95       	ret
+
+0000023e <tdivide>:
+tdivide():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:83
+;         Start of 32 % 32 bit division             *
+;   http://www.avrfreaks.net/comment/4819#comment-4819    *
+;************************************************************
+ ; Dividend will hold the integer result
+tdivide: 
+	push    r2              ; save working registers
+ 23e:	2f 92       	push	r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:84
+	push    r3              ; 
+ 240:	3f 92       	push	r3
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:85
+	push    r16
+ 242:	0f 93       	push	r16
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:86
+	clr     r3       ; clear  register
+ 244:	33 24       	eor	r3, r3
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:87
+	clr     r2       ; clear  register
+ 246:	22 24       	eor	r2, r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:88
+	clr     r1       ; clear  register
+ 248:	11 24       	eor	r1, r1
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:89
+	clr     r0       ; clear  register	
+ 24a:	00 24       	eor	r0, r0
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:90
+    ldi    r16,33                      ;1   init loop counter 
+ 24c:	01 e2       	ldi	r16, 0x21	; 33
+
+0000024e <tdivide_label1>:
+tdivide_label1():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:92
+tdivide_label1: 
+    sec                                    ;1   set carry 
+ 24e:	08 94       	sec
+
+00000250 <tdivide_label2>:
+tdivide_label2():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:94
+tdivide_label2: 
+    ROL    r22                       ;1   shift left dividend 
+ 250:	66 1f       	adc	r22, r22
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:95
+    ROL    r23                       ;1 
+ 252:	77 1f       	adc	r23, r23
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:96
+    ROL    r24                       ;1 
+ 254:	88 1f       	adc	r24, r24
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:97
+    ROL    r25                       ;1 
+ 256:	99 1f       	adc	r25, r25
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:100
+    ;rol    dividend5
+    ;rol    dividend6
+    dec    r16                         ;1 
+ 258:	0a 95       	dec	r16
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:101
+    brne   tdivide_label3                ;1/2 
+ 25a:	49 f4       	brne	.+18     	; 0x26e <tdivide_label3>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:103
+	;shape up structures
+	MOV   r21,r3      ;
+ 25c:	53 2d       	mov	r21, r3
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:104
+	MOV   r20,r2      ;
+ 25e:	42 2d       	mov	r20, r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:105
+	MOV   r19,r1      ;
+ 260:	31 2d       	mov	r19, r1
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:106
+	MOV   r18,r0      ; 
+ 262:	20 2d       	mov	r18, r0
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:109
+
+	;; restore registers
+	pop     r16
+ 264:	0f 91       	pop	r16
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:110
+	pop     r3
+ 266:	3f 90       	pop	r3
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:111
+	pop     r2
+ 268:	2f 90       	pop	r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:112
+	clr     r1              ; clear zero register	
+ 26a:	11 24       	eor	r1, r1
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:113
+    ret                                    ;4 
+ 26c:	08 95       	ret
+
+0000026e <tdivide_label3>:
+tdivide_label3():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:116
+
+tdivide_label3: 
+    rol    r0                      ;1 
+ 26e:	00 1c       	adc	r0, r0
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:117
+    rol    r1                      ;1 
+ 270:	11 1c       	adc	r1, r1
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:118
+    rol    r2                      ;1 
+ 272:	22 1c       	adc	r2, r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:119
+    rol    r3                      ;1
+ 274:	33 1c       	adc	r3, r3
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:122
+    ;rol    remainder5
+    ;rol    remainder6
+    sub    r0,r18             ;1   rem -= divisor 
+ 276:	02 1a       	sub	r0, r18
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:123
+    sbc    r1,r19             ;1 
+ 278:	13 0a       	sbc	r1, r19
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:124
+    sbc    r2,r20             ;1 
+ 27a:	24 0a       	sbc	r2, r20
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:125
+    sbc    r3,r21             ;1 
+ 27c:	35 0a       	sbc	r3, r21
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:128
+    ;sbc    remainder5,divisor5
+    ;sbc    remainder6,divisor6
+    brcc   tdivide_label1                ;1/2 if res < 0 
+ 27e:	38 f7       	brcc	.-50     	; 0x24e <tdivide_label1>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:129
+    add    r0,r18             ;1   restore remainder 
+ 280:	02 0e       	add	r0, r18
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:130
+    adc    r1,r19             ;1 
+ 282:	13 1e       	adc	r1, r19
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:131
+    adc    r2,r20             ;1 
+ 284:	24 1e       	adc	r2, r20
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:132
+    adc    r3,r21             ;1 
+ 286:	35 1e       	adc	r3, r21
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:135
+    ;adc    remainder5,divisor5
+    ;adc    remainder6,divisor6 
+    clc                                    ;1   clear carry 
+ 288:	88 94       	clc
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/slimmath.S:136
+    rjmp   tdivide_label2                ;2 
+ 28a:	e2 cf       	rjmp	.-60     	; 0x250 <tdivide_label2>
+
+0000028c <ReadADC()>:
+ReadADC():
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:39
+    count = 0;
+  }
+}
+
+uint16_t ReadADC() {
+  ADCSRA |= (1 << ADSC);       // start conversion
+ 28c:	36 9a       	sbi	0x06, 6	; 6
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:40
+  while (ADCSRA & (1 << ADSC)) {} // wait for conversion complete
+ 28e:	36 99       	sbic	0x06, 6	; 6
+ 290:	fe cf       	rjmp	.-4      	; 0x28e <ReadADC()+0x2>
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:41
+  return ADC;
+ 292:	84 b1       	in	r24, 0x04	; 4
+ 294:	95 b1       	in	r25, 0x05	; 5
+C:\github\Karat2N_synt\1freq\tiny13synt7/tiny13synt7.ino:42
+}
+ 296:	08 95       	ret
+
+00000298 <i2cSendRegister>:
+i2cSendRegister():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:13
+#define I2C_WRITE 0b11000000
+#define I2C_READ  0b11000001
+
+
+uint8_t i2cSendRegister(uint8_t reg, uint8_t data)
+{
+ 298:	cf 93       	push	r28
+ 29a:	df 93       	push	r29
+ 29c:	d8 2f       	mov	r29, r24
+ 29e:	c6 2f       	mov	r28, r22
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:14
+  i2c_start_wait(I2C_WRITE);
+ 2a0:	80 ec       	ldi	r24, 0xC0	; 192
+ 2a2:	6e df       	rcall	.-292    	; 0x180 <i2c_start_wait>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:15
+  i2c_write(reg);
+ 2a4:	8d 2f       	mov	r24, r29
+ 2a6:	7e df       	rcall	.-260    	; 0x1a4 <i2c_write>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:16
+  i2c_write(data);
+ 2a8:	8c 2f       	mov	r24, r28
+ 2aa:	7c df       	rcall	.-264    	; 0x1a4 <i2c_write>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:17
+  i2c_stop();
+ 2ac:	73 df       	rcall	.-282    	; 0x194 <i2c_stop>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:19
+  return 0;
+}
+ 2ae:	80 e0       	ldi	r24, 0x00	; 0
+ 2b0:	df 91       	pop	r29
+ 2b2:	cf 91       	pop	r28
+ 2b4:	08 95       	ret
+
+000002b6 <setupPLL>:
+setupPLL():
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:22
+
+static void setupPLL( uint8_t pll, uint8_t mult, uint32_t num, uint32_t denom, uint8_t rDiv)
+{
+ 2b6:	2f 92       	push	r2
+ 2b8:	3f 92       	push	r3
+ 2ba:	4f 92       	push	r4
+ 2bc:	5f 92       	push	r5
+ 2be:	6f 92       	push	r6
+ 2c0:	7f 92       	push	r7
+ 2c2:	8f 92       	push	r8
+ 2c4:	9f 92       	push	r9
+ 2c6:	af 92       	push	r10
+ 2c8:	bf 92       	push	r11
+ 2ca:	cf 92       	push	r12
+ 2cc:	df 92       	push	r13
+ 2ce:	ef 92       	push	r14
+ 2d0:	ff 92       	push	r15
+ 2d2:	0f 93       	push	r16
+ 2d4:	1f 93       	push	r17
+ 2d6:	cf 93       	push	r28
+ 2d8:	df 93       	push	r29
+ 2da:	cd b7       	in	r28, 0x3d	; 61
+ 2dc:	dd 27       	eor	r29, r29
+ 2de:	c0 51       	subi	r28, 0x10	; 16
+ 2e0:	cd bf       	out	0x3d, r28	; 61
+ 2e2:	28 2e       	mov	r2, r24
+ 2e4:	36 2e       	mov	r3, r22
+ 2e6:	67 01       	movw	r12, r14
+ 2e8:	78 01       	movw	r14, r16
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:27
+  uint32_t P1;
+  uint32_t P2;
+  uint32_t P3;
+
+  uint32_t mulresult = num << 7;
+ 2ea:	29 01       	movw	r4, r18
+ 2ec:	3a 01       	movw	r6, r20
+ 2ee:	87 e0       	ldi	r24, 0x07	; 7
+ 2f0:	44 0c       	add	r4, r4
+ 2f2:	55 1c       	adc	r5, r5
+ 2f4:	66 1c       	adc	r6, r6
+ 2f6:	77 1c       	adc	r7, r7
+ 2f8:	8a 95       	dec	r24
+ 2fa:	d1 f7       	brne	.-12     	; 0x2f0 <setupPLL+0x3a>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:28
+  div_result output = tdivide(mulresult, denom);
+ 2fc:	a8 01       	movw	r20, r16
+ 2fe:	96 01       	movw	r18, r12
+ 300:	c3 01       	movw	r24, r6
+ 302:	b2 01       	movw	r22, r4
+ 304:	9c df       	rcall	.-200    	; 0x23e <tdivide>
+ 306:	6d 83       	std	Y+5, r22	; 0x05
+ 308:	7e 83       	std	Y+6, r23	; 0x06
+ 30a:	8f 83       	std	Y+7, r24	; 0x07
+ 30c:	98 87       	std	Y+8, r25	; 0x08
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:29
+  uint32_t term =  output.quot;
+ 30e:	8d 80       	ldd	r8, Y+5	; 0x05
+ 310:	9e 80       	ldd	r9, Y+6	; 0x06
+ 312:	af 80       	ldd	r10, Y+7	; 0x07
+ 314:	b8 84       	ldd	r11, Y+8	; 0x08
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:30
+  uint32_t mulresultmix = tmultiply(denom, term);
+ 316:	a5 01       	movw	r20, r10
+ 318:	94 01       	movw	r18, r8
+ 31a:	c8 01       	movw	r24, r16
+ 31c:	b6 01       	movw	r22, r12
+ 31e:	5e df       	rcall	.-324    	; 0x1dc <tmultiply>
+ 320:	29 87       	std	Y+9, r18	; 0x09
+ 322:	3a 87       	std	Y+10, r19	; 0x0a
+ 324:	4b 87       	std	Y+11, r20	; 0x0b
+ 326:	5c 87       	std	Y+12, r21	; 0x0c
+ 328:	6d 87       	std	Y+13, r22	; 0x0d
+ 32a:	7e 87       	std	Y+14, r23	; 0x0e
+ 32c:	8f 87       	std	Y+15, r24	; 0x0f
+ 32e:	98 8b       	std	Y+16, r25	; 0x10
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:31
+  P2 = mulresult - mulresultmix;
+ 330:	89 85       	ldd	r24, Y+9	; 0x09
+ 332:	9a 85       	ldd	r25, Y+10	; 0x0a
+ 334:	ab 85       	ldd	r26, Y+11	; 0x0b
+ 336:	bc 85       	ldd	r27, Y+12	; 0x0c
+ 338:	48 1a       	sub	r4, r24
+ 33a:	59 0a       	sbc	r5, r25
+ 33c:	6a 0a       	sbc	r6, r26
+ 33e:	7b 0a       	sbc	r7, r27
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:33
+  mulresult = mult << 7;
+  P1 = mulresult + term - 512;
+ 340:	b5 01       	movw	r22, r10
+ 342:	a4 01       	movw	r20, r8
+ 344:	52 50       	subi	r21, 0x02	; 2
+ 346:	61 09       	sbc	r22, r1
+ 348:	71 09       	sbc	r23, r1
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:32
+  uint32_t mulresult = num << 7;
+  div_result output = tdivide(mulresult, denom);
+  uint32_t term =  output.quot;
+  uint32_t mulresultmix = tmultiply(denom, term);
+  P2 = mulresult - mulresultmix;
+  mulresult = mult << 7;
+ 34a:	83 2d       	mov	r24, r3
+ 34c:	90 e0       	ldi	r25, 0x00	; 0
+ 34e:	96 95       	lsr	r25
+ 350:	98 2f       	mov	r25, r24
+ 352:	88 27       	eor	r24, r24
+ 354:	97 95       	ror	r25
+ 356:	87 95       	ror	r24
+ 358:	09 2e       	mov	r0, r25
+ 35a:	00 0c       	add	r0, r0
+ 35c:	aa 0b       	sbc	r26, r26
+ 35e:	bb 0b       	sbc	r27, r27
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:33
+  P1 = mulresult + term - 512;
+ 360:	4a 01       	movw	r8, r20
+ 362:	5b 01       	movw	r10, r22
+ 364:	88 0e       	add	r8, r24
+ 366:	99 1e       	adc	r9, r25
+ 368:	aa 1e       	adc	r10, r26
+ 36a:	bb 1e       	adc	r11, r27
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:35
+  P3 = denom;
+  i2cSendRegister(pll + 0, (P3 & 0x0000FF00) >> 8);
+ 36c:	99 27       	eor	r25, r25
+ 36e:	8f 2d       	mov	r24, r15
+ 370:	7e 2d       	mov	r23, r14
+ 372:	6d 2d       	mov	r22, r13
+ 374:	82 2d       	mov	r24, r2
+ 376:	90 df       	rcall	.-224    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:36
+  i2cSendRegister(pll + 1, (P3 & 0x000000FF));
+ 378:	6c 2d       	mov	r22, r12
+ 37a:	81 e0       	ldi	r24, 0x01	; 1
+ 37c:	82 0d       	add	r24, r2
+ 37e:	8c df       	rcall	.-232    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:43
+  {
+    i2cSendRegister(pll + 2,   ((P1 & 0x00030000) >> 16) | rDiv);
+  }
+  else
+  {
+    i2cSendRegister(pll + 2,   ((P1 & 0x00030000) >> 16));
+ 380:	6a 2d       	mov	r22, r10
+ 382:	63 70       	andi	r22, 0x03	; 3
+ 384:	82 e0       	ldi	r24, 0x02	; 2
+ 386:	82 0d       	add	r24, r2
+ 388:	87 df       	rcall	.-242    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:45
+  }
+  i2cSendRegister(pll + 3, (P1 & 0x0000FF00) >> 8);
+ 38a:	99 27       	eor	r25, r25
+ 38c:	8b 2d       	mov	r24, r11
+ 38e:	7a 2d       	mov	r23, r10
+ 390:	69 2d       	mov	r22, r9
+ 392:	83 e0       	ldi	r24, 0x03	; 3
+ 394:	82 0d       	add	r24, r2
+ 396:	80 df       	rcall	.-256    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:46
+  i2cSendRegister(pll + 4, (P1 & 0x000000FF));
+ 398:	68 2d       	mov	r22, r8
+ 39a:	84 e0       	ldi	r24, 0x04	; 4
+ 39c:	82 0d       	add	r24, r2
+ 39e:	7c df       	rcall	.-264    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:47
+  i2cSendRegister(pll + 5, ((P3 & 0x000F0000) >> 12) | ((P2 & 0x000F0000) >> 16));
+ 3a0:	5c e0       	ldi	r21, 0x0C	; 12
+ 3a2:	f6 94       	lsr	r15
+ 3a4:	e7 94       	ror	r14
+ 3a6:	d7 94       	ror	r13
+ 3a8:	c7 94       	ror	r12
+ 3aa:	5a 95       	dec	r21
+ 3ac:	d1 f7       	brne	.-12     	; 0x3a2 <setupPLL+0xec>
+ 3ae:	9c 2d       	mov	r25, r12
+ 3b0:	90 7f       	andi	r25, 0xF0	; 240
+ 3b2:	66 2d       	mov	r22, r6
+ 3b4:	6f 70       	andi	r22, 0x0F	; 15
+ 3b6:	69 2b       	or	r22, r25
+ 3b8:	85 e0       	ldi	r24, 0x05	; 5
+ 3ba:	82 0d       	add	r24, r2
+ 3bc:	6d df       	rcall	.-294    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:48
+  i2cSendRegister(pll + 6, (P2 & 0x0000FF00) >> 8);
+ 3be:	99 27       	eor	r25, r25
+ 3c0:	87 2d       	mov	r24, r7
+ 3c2:	76 2d       	mov	r23, r6
+ 3c4:	65 2d       	mov	r22, r5
+ 3c6:	86 e0       	ldi	r24, 0x06	; 6
+ 3c8:	82 0d       	add	r24, r2
+ 3ca:	66 df       	rcall	.-308    	; 0x298 <i2cSendRegister>
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:49
+  i2cSendRegister(pll + 7, (P2 & 0x000000FF));
+ 3cc:	64 2d       	mov	r22, r4
+ 3ce:	87 e0       	ldi	r24, 0x07	; 7
+ 3d0:	82 0d       	add	r24, r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:50
+}
+ 3d2:	c0 5f       	subi	r28, 0xF0	; 240
+ 3d4:	cd bf       	out	0x3d, r28	; 61
+ 3d6:	df 91       	pop	r29
+ 3d8:	cf 91       	pop	r28
+ 3da:	1f 91       	pop	r17
+ 3dc:	0f 91       	pop	r16
+ 3de:	ff 90       	pop	r15
+ 3e0:	ef 90       	pop	r14
+ 3e2:	df 90       	pop	r13
+ 3e4:	cf 90       	pop	r12
+ 3e6:	bf 90       	pop	r11
+ 3e8:	af 90       	pop	r10
+ 3ea:	9f 90       	pop	r9
+ 3ec:	8f 90       	pop	r8
+ 3ee:	7f 90       	pop	r7
+ 3f0:	6f 90       	pop	r6
+ 3f2:	5f 90       	pop	r5
+ 3f4:	4f 90       	pop	r4
+ 3f6:	3f 90       	pop	r3
+ 3f8:	2f 90       	pop	r2
+C:\Users\fm\AppData\Local\Temp\arduino_build_452503\sketch/tiny5351.c:49
+  }
+  i2cSendRegister(pll + 3, (P1 & 0x0000FF00) >> 8);
+  i2cSendRegister(pll + 4, (P1 & 0x000000FF));
+  i2cSendRegister(pll + 5, ((P3 & 0x000F0000) >> 12) | ((P2 & 0x000F0000) >> 16));
+  i2cSendRegister(pll + 6, (P2 & 0x0000FF00) >> 8);
+  i2cSendRegister(pll + 7, (P2 & 0x000000FF));
+ 3fa:	4e cf       	rjmp	.-356    	; 0x298 <i2cSendRegister>
+
+000003fc <_exit>:
+exit():
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2278
+ 3fc:	f8 94       	cli
+
+000003fe <__stop_program>:
+__stop_program():
+/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/gcc-build/avr/avr25/tiny-stack/libgcc/../../../../../gcc/libgcc/config/avr/lib1funcs.S:2280
+ 3fe:	ff cf       	rjmp	.-2      	; 0x3fe <__stop_program>
