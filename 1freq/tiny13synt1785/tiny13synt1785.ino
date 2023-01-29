@@ -14,8 +14,8 @@ void setup() {
 void loop() {
   uint8_t  ch = ReadADC() >> 4;
   if (prv_ch != ch) {
+    si5351_freq(((frequency << 1) + uint32_t(ch << 6)), 0, prv_ch);
     prv_ch = ch;
-    si5351_freq(((frequency << 2) + uint32_t(ch << 6)), 0, prv_ch);
   }
 }
 

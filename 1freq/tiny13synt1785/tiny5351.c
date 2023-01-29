@@ -55,7 +55,7 @@ void si5351_freq(uint32_t freq, uint8_t clk, uint8_t res) //, uint8_t i, uint8_t
   uint64_t pll_freq;
   //uint8_t r_div = 1;
   i2c_init();
-#define ml 35
+#define ml 26
   setupPLL(SI_SYNTH_PLL_A, ml, 0, 1, R_DIV_NA);
   //setupPLL(SI_SYNTH_PLL_B, 30, 0, 1,R_DIV_NA);
   pll_freq = (SI_XTAL_FREQ * ml);
@@ -67,7 +67,7 @@ void si5351_freq(uint32_t freq, uint8_t clk, uint8_t res) //, uint8_t i, uint8_t
   l = l << 10;
   uint32_t num = l;
   const uint32_t denom = 0xFFFFF;
-  setupPLL((SI_SYNTH_MS_0 + (8 * clk)), si5351_mult, num, denom, SI_R_DIV_4);
+  setupPLL((SI_SYNTH_MS_0 + (8 * clk)), si5351_mult, num, denom, SI_R_DIV_2);
   //i2cSendRegister((SI_CLK0_CONTROL + clk), (0x4C + SI_outPWR) | SI_CLK_SRC_PLL_A);
   i2cSendRegister((SI_CLK0_CONTROL + clk), (0x4C) | SI_CLK_SRC_PLL_A);
   if (res == 254) {

@@ -5,7 +5,7 @@
 
 /* Borrowed from https://github.com/threeme3/QCX-SSB */
 
-#define SI_XTAL_FREQ  27003660UL // Measured crystal frequency of XTAL2 for CL = 10pF
+#define SI_XTAL_FREQ  27013000UL // Measured crystal frequency of XTAL2 for CL = 10pF
 //extern uint32_t SI_XTAL_FREQ;
 //extern uint8_t SI_outPWR;
 #define SI_CLK_OE 3     // Register definitions
