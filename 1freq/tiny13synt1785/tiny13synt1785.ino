@@ -1,7 +1,6 @@
 #include <avr/eeprom.h>
 #include "tiny5351.h"
-uint32_t frequency = 2284484UL;
-//uint32_t frequency = 2285000UL;
+uint32_t frequency = 3275000UL;
 uint8_t prv_ch = 254;
 
 void setup() {
